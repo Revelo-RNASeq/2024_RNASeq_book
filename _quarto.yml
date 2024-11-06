@@ -1,0 +1,68 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "RNASeq Analysis"
+  date: "08/30/2024"
+  author: Revelo DataLab
+  reader-mode: true
+
+  page-footer:
+    left: |
+      Revelo Datalab
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  favicon: cover.png
+  chapters:
+    - index.qmd
+
+    - intro.qmd
+
+    - part: 001_sec-preproc.qmd
+      chapters:
+        - 001_a_sec-preproc_import.qmd
+        - 001_b_sec-preproc_params.qmd
+        - 001_c_sec-preproc_filtraggio.qmd
+        - 001_d_sec-preproc_EDA_raw.qmd
+        - 001_e_sec-preproc_trans.qmd
+        - 001_f_sec-preproc_EDA_trans.qmd
+
+    - part: 002_sec-DEG.qmd
+      chapters:
+        - 002_a_sec-DEG-norm.qmd
+        - 002_b_sec-DEG-stat.qmd
+        - 002_c_sec-DEG-test.qmd
+        - 002_d_sec-DEG-allinone.qmd
+        - 002_e_sec-DEG-shrinkage.qmd
+    - part: 003_sec-Visualization.qmd
+      chapters: 
+        - 003_a_sec-vis-volcano.qmd
+        - 003_b_sec-vis-heatmap.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - r4ds.scss
+    code-link: true
+    code-fold: true
+    code-summary: "Mostra il codice R"
+    code-tools: true
+
+    author-meta: "Marco Chiapello"
+    include-in-header: "plausible.html"
+    callout-appearance: simple
+
+features:
+  advanced_analysis: true
+  
+params:
+  mycondition: infection
+  mynum: InfluenzaA
+  mydenom: NonInfected
+  mypval: 0.01
+  myfc: 0.8
+  mypadj: fdr
+  
+editor: visual

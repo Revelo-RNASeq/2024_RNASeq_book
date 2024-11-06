@@ -1,0 +1,23 @@
+# Cover {.unnumbered}
+
+
+
+::: {.content-hidden unless-meta="features.advanced_analysis"}
+```{r}
+#| label: workflow-customer 
+#| echo: false
+#| out.width: NULL
+
+knitr::include_graphics("images/customer.png")
+```
+:::
+
+::: {.content-hidden when-meta="features.advanced_analysis"}
+```{r}
+#| label: workflow-internal 
+#| echo: false
+#| out.width: 600
+
+knitr::include_graphics("images/internal.png")
+```
+:::

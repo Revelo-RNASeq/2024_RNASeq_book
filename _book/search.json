@@ -1,0 +1,620 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "RNASeq Analysis",
+    "section": "",
+    "text": "Cover",
+    "crumbs": [
+      "Cover"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduzione all’analisi dei dati RNA-Seq",
+    "section": "",
+    "text": "Figure 1: Questi sono i passaggi per l’analisi RNASeq\n\n\n\n\nIntroduzione sintetica di ogni fase:\n\n\nImportazione dei Dati: Importare la matrice di conteggio.\n\nDisegno Sperimentale: Definire la tabella di metadati con i fattori sperimentali e i livelli per ciascun campione.\n\nEsplorazione dei Dati (Grezzi): Analizzare le distribuzioni dei conteggi, le relazioni tra campioni e identificare potenziali outlier.\n\nTrasformazione dei Dati: Applicare VST o rlog per stabilizzare la varianza e migliorare l’adattamento al modello statistico.\n\nEsplorazione dei Dati (Trasformati): Valutare l’effetto della trasformazione e confrontarlo con i dati originali.\n\nFiltraggio: Rimuovere i geni con basso conteggio per aumentare l’affidabilità dell’analisi.\n\nModello DESeq2: Utilizzare la distribuzione binomiale negativa per modellare i dati di conteggio e stimare i parametri chiave.\n\nContrasti: Definire i confronti specifici tra le condizioni sperimentali.\n\nDESeq2: Eseguire l’analisi dell’espressione differenziale con la funzione DESeq().\n\nEsplorazione dei Risultati: Individuare i geni differenzialmente espressi in base a significatività e dimensione dell’effetto.\n\nShrinking: Applicare lo shrinkage per migliorare l’accuratezza delle stime dei log2 fold change.\n\nVisualizzazione dei Risultati: Creare grafici (MA plot, volcano plot, heatmap) per rappresentare i risultati.",
+    "crumbs": [
+      "Introduzione  all'analisi dei dati RNA-Seq"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "\n1  Summary\n",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "whole-game.html",
+    "href": "whole-game.html",
+    "title": "Preparazione ed esplorazione dei dati",
+    "section": "",
+    "text": "Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla preparazione dei dati grezzi di sequenziamento per l’analisi differenziale.\nPrima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale comprendere a fondo la natura dei dati che andremo ad analizzare.\nIn questa parte del corso, impareremo ad importare i dati di conteggio in R, a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset. Attraverso la visualizzazione e l’analisi esplorativa, saremo in grado di valutare la qualità dei dati, identificare potenziali problemi e prepararli per l’analisi statistica con DESeq2.\nAffronteremo anche due passaggi cruciali nella pre-elaborazione dei dati: la trasformazione e il filtraggio. Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile, migliorando l’accuratezza e l’affidabilità dell’analisi differenziale che effettueremo nella seconda parte del nostro workflow.\n\n\n\n\n\n\n\nFigure 1: La fase di ‘Preparazione e esplorazione dei dati’ nell’analisi RNA-seq consiste nell’organizzare, visualizzare e interpretare i dati grezzi per individuare pattern, tendenze e anomalie. Questo processo è cruciale per preparare i dati all’analisi differenziale e ottenere risultati affidabili.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati"
+    ]
+  },
+  {
+    "objectID": "visualize.html",
+    "href": "visualize.html",
+    "title": "Visualize",
+    "section": "",
+    "text": "After reading the first part of the book, you understand (at least superficially) the most important tools for doing data science. Now it’s time to start diving into the details. In this part of the book, you’ll learn about visualizing data in further depth.",
+    "crumbs": [
+      "Visualize"
+    ]
+  },
+  {
+    "objectID": "cover.html",
+    "href": "cover.html",
+    "title": "Cover",
+    "section": "",
+    "text": "Figure 1",
+    "crumbs": [
+      "Cover"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html",
+    "href": "sec-preproc_import.html",
+    "title": "1  Importazione dei dati",
+    "section": "",
+    "text": "1.1 Descrizione del dataset\nStato: Pubblico dal 14 giugno 2017Titolo: L’effetto dell’infezione delle vie respiratorie superiori sui cambiamenti trascrittomici nel SNCOrganismo: Mus musculus (topo domestico)Tipo di esperimento: Profilo di espressione mediante sequenziamento ad alta produttività\nSommario:\nDisegno complessivo: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc.html",
+    "href": "sec-preproc.html",
+    "title": "Preparazione ed esplorazione dei dati",
+    "section": "",
+    "text": "Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla preparazione dei dati grezzi di sequenziamento per l’analisi differenziale.\nPrima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale comprendere a fondo la natura dei dati che andremo ad analizzare.\nIn questa parte del corso, impareremo ad importare i dati di conteggio in R, a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset. Attraverso la visualizzazione e l’analisi esplorativa, saremo in grado di valutare la qualità dei dati, identificare potenziali problemi e prepararli per l’analisi statistica con DESeq2.\nAffronteremo anche due passaggi cruciali nella pre-elaborazione dei dati: la trasformazione e il filtraggio. Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile, migliorando l’accuratezza e l’affidabilità dell’analisi differenziale che effettueremo nella seconda parte del nostro workflow.\n\n\n\n\n\n\n\nFigure 1: La fase di ‘Preparazione e esplorazione dei dati’ nell’analisi RNA-seq consiste nell’organizzare, visualizzare e interpretare i dati grezzi per individuare pattern, tendenze e anomalie. Questo processo è cruciale per preparare i dati all’analisi differenziale e ottenere risultati affidabili.\n\n\n\n\nCapitoli di questa sezione:\n\nNel capitolo 1  Importazione dei dati\n\nNel capitolo 2  Disegno Sperimentale definiremo i campioni e i parametri da usare",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#parametri-utilizzati-in-questa-analisi",
+    "href": "sec-preproc_import.html#parametri-utilizzati-in-questa-analisi",
+    "title": "1  Importazione dei dati",
+    "section": "",
+    "text": "1.1.1 Confronto\n\nTutti i rapporti devono essere considerati come InfluenzaA rispetto a NonInfected\n\nUn rapporto di fold change &gt; 1 (o logFCRatio positivo) indica sovraespressione nella condizione InfluenzaA\n\nUn rapporto di fold change &lt; 1 (o logFCRatio negativo) indica sovraespressione nella condizione NonInfected\n\n\n1.1.2 Cutoff di Fold Change e p-Value utilizzati\n\nCutoff di Log Fold Change = 0.8\n\nCutoff di P-Value = 0.01\n\nI p-value aggiustati sono determinati con il metodo fdr\n\n\nI dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\nPer questo report, tutti e solo i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale viene scartato e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni non presenti nel confronto possano avere sulla trasformazione e normalizzazione dei campioni presenti nel confronto.\nI campioni presi in considerazione in questa analisi appartengono ai gruppi: InfluenzaA e NonInfected.\nQuesto è il layout del samplesheet, ovvero l’associazione tra i singoli campioni e i gruppi di campioni:",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_params.html",
+    "href": "sec-preproc_params.html",
+    "title": "2  Disegno Sperimentale",
+    "section": "",
+    "text": "2.1 Confronto",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_params.html#confronto",
+    "href": "sec-preproc_params.html#confronto",
+    "title": "2  Disegno Sperimentale",
+    "section": "",
+    "text": "Nella nostra analisi ci focalizzeremo soltanto sui campioni provenienti da Cerebellum\n\nTutti i rapporti devono essere considerati come InfluenzaA rispetto a NonInfected\n\nUn rapporto di fold change &gt; 1 (o logFCRatio positivo) indica sovraespressione nella condizione InfluenzaA\n\nUn rapporto di fold change &lt; 1 (o logFCRatio negativo) indica sovraespressione nella condizione NonInfected",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_params.html#cutoff-di-fold-change-e-p-value-utilizzati",
+    "href": "sec-preproc_params.html#cutoff-di-fold-change-e-p-value-utilizzati",
+    "title": "2  Disegno Sperimentale",
+    "section": "\n2.2 Cutoff di Fold Change e p-Value utilizzati",
+    "text": "2.2 Cutoff di Fold Change e p-Value utilizzati\n\nCutoff di Log Fold Change = 0.8\n\nCutoff di P-Value = 0.01\n\nI p-value aggiustati sono determinati con il metodo fdr\n\n\nI dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\nPer questo report, tutti e solo i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale viene scartato e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni non presenti nel confronto possano avere sulla trasformazione e normalizzazione dei campioni presenti nel confronto.\nI campioni presi in considerazione in questa analisi appartengono ai gruppi: InfluenzaA e NonInfected.\nQuesto è il layout del samplesheet, ovvero l’associazione tra i singoli campioni e i gruppi di campioni:",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#descrizione-del-dataset",
+    "href": "sec-preproc_import.html#descrizione-del-dataset",
+    "title": "1  Importazione dei dati",
+    "section": "",
+    "text": "Scopo: L’obiettivo di questo studio era determinare l’effetto di un’infezione delle vie respiratorie superiori sui cambiamenti nella trascrizione dell’RNA che si verificano nel cervelletto e nel midollo spinale dopo l’infezione.\n\n\nMetodi: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.\n\n\nRisultati: Dopo il trimming e l’esclusione delle letture multi-mapping, una media del 92,07% (cervelletto) e del 91,71% (midollo spinale) dei geni sono stati mappati in modo univoco a un gene. Il numero medio di letture single-end per campione era 36,42 e 37 milioni rispettivamente per il midollo spinale e il cervelletto. L’infezione ha causato cambiamenti significativi al trascrittoma di ciascun tessuto, che sono stati più evidenti al giorno 8 dopo l’infezione.\n\n\nConclusione: Questo studio è il primo a utilizzare la tecnologia RNA-seq per valutare l’effetto dell’infezione periferica da influenza A sui cambiamenti nell’espressione genica del cervelletto e del midollo spinale.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#lista-dei-campioni",
+    "href": "sec-preproc_import.html#lista-dei-campioni",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.2 Lista dei campioni",
+    "text": "1.2 Lista dei campioni\n\nMostra il codice R# downloading raw data\nif(!fs::dir_exists(\"data\")){\n  fs::dir_create(\"data\")\n}\n\n# The dataset is available at Gene Expression Omnibus (GEO), under the accession number GSE96870. \nif(!fs::file_exists(\"data/GSE96870_counts_cerebellum.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_counts_cerebellum.csv\", \n  destfile = \"data/GSE96870_counts_cerebellum.csv\"\n)\n}\n\nif(!fs::file_exists(\"data/GSE96870_coldata_all.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_coldata_all.csv\", \n  destfile = \"data/GSE96870_coldata_all.csv\"\n  )\n}\n\nif(!fs::file_exists(\"data/GSE96870_rowranges.tsv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_rowranges.tsv\", \n  destfile = \"data/GSE96870_rowranges.tsv\"\n)\n}\n\n# read all data description\ncoldata_all &lt;- read_csv(\"data/GSE96870_coldata_all.csv\")\n\ndatatable(coldata_all |&gt; select(sample, sex, infection, time, tissue),\n  options = list(\n  columnDefs = list(list(className = 'dt-center', targets = 5)),\n  pageLength = 10,\n  lengthMenu = c(10, 20, 30, 40 , 50)\n))",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#summary-dei-campioni",
+    "href": "sec-preproc_import.html#summary-dei-campioni",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.3 Summary dei campioni",
+    "text": "1.3 Summary dei campioni\n\nMostra il codice Rdatatable(coldata_all |&gt; dplyr::count(sex, infection, time, tissue),\n  options = list(\n  columnDefs = list(list(className = 'dt-center', targets = 5)),\n  pageLength = 12\n))",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#descrizione-del-dataset-1",
+    "href": "sec-preproc_import.html#descrizione-del-dataset-1",
+    "title": "1  Importazione dei dati",
+    "section": "\n2.1 Descrizione del dataset",
+    "text": "2.1 Descrizione del dataset\nStato: Pubblico dal 14 giugno 2017Titolo: L’effetto dell’infezione delle vie respiratorie superiori sui cambiamenti trascrittomici nel SNCOrganismo: Mus musculus (topo domestico)Tipo di esperimento: Profilo di espressione mediante sequenziamento ad alta produttività\nSommario:\n\n\n\nScopo: L’obiettivo di questo studio era determinare l’effetto di un’infezione delle vie respiratorie superiori sui cambiamenti nella trascrizione dell’RNA che si verificano nel cervelletto e nel midollo spinale dopo l’infezione.\n\n\nMetodi: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.\n\n\nRisultati: Dopo il trimming e l’esclusione delle letture multi-mapping, una media del 92,07% (cervelletto) e del 91,71% (midollo spinale) dei geni sono stati mappati in modo univoco a un gene. Il numero medio di letture single-end per campione era 36,42 e 37 milioni rispettivamente per il midollo spinale e il cervelletto. L’infezione ha causato cambiamenti significativi al trascrittoma di ciascun tessuto, che sono stati più evidenti al giorno 8 dopo l’infezione.\n\n\nConclusione: Questo studio è il primo a utilizzare la tecnologia RNA-seq per valutare l’effetto dell’infezione periferica da influenza A sui cambiamenti nell’espressione genica del cervelletto e del midollo spinale.\n\n\n\nDisegno complessivo: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#lista-dei-campioni-1",
+    "href": "sec-preproc_import.html#lista-dei-campioni-1",
+    "title": "1  Importazione dei dati",
+    "section": "\n2.2 Lista dei campioni",
+    "text": "2.2 Lista dei campioni\nquarto-executable-code-5450563D\n#| echo: true\n#| message: false\n#| warning: false\n#| tbl-cap: \"Tabella con tutti i campioni presenti nell'esperimento\"\n# downloading raw data\nif(!fs::dir_exists(\"data\")){\n  fs::dir_create(\"data\")\n}\n\n# The dataset is available at Gene Expression Omnibus (GEO), under the accession number GSE96870. \nif(!fs::file_exists(\"data/GSE96870_counts_cerebellum.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_counts_cerebellum.csv\", \n  destfile = \"data/GSE96870_counts_cerebellum.csv\"\n)\n}\n\nif(!fs::file_exists(\"data/GSE96870_coldata_all.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_coldata_all.csv\", \n  destfile = \"data/GSE96870_coldata_all.csv\"\n  )\n}\n\nif(!fs::file_exists(\"data/GSE96870_rowranges.tsv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_rowranges.tsv\", \n  destfile = \"data/GSE96870_rowranges.tsv\"\n)\n}\n\n# read all data description\ncoldata_all &lt;- read_csv(\"data/GSE96870_coldata_all.csv\")\n\ndatatable(coldata_all |&gt; select(sample, sex, infection, time, tissue),\n  options = list(\n  columnDefs = list(list(className = 'dt-center', targets = 5)),\n  pageLength = 10,\n  lengthMenu = c(10, 20, 30, 40 , 50)\n))",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#summary-dei-campioni-1",
+    "href": "sec-preproc_import.html#summary-dei-campioni-1",
+    "title": "1  Importazione dei dati",
+    "section": "\n2.3 Summary dei campioni",
+    "text": "2.3 Summary dei campioni\nquarto-executable-code-5450563D\ndatatable(coldata_all |&gt; dplyr::count(sex, infection, time, tissue),\n  options = list(\n  pageLength = 12\n))\n\n:::",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_filtraggio.html",
+    "href": "sec-preproc_filtraggio.html",
+    "title": "3  Filtraggio",
+    "section": "",
+    "text": "Le righe (cioè i geni) del dataset originale che hanno meno di 5 conteggi di lettura sono state filtrate: questo è un modo standard per rimuovere i geni non espressi e rendere la tabella dei dati più leggera, poiché molti geni sono per lo più non espressi. In casi particolari può essere utilizzato un numero diverso (più alto), al fine di essere più stringenti.\n\nMostra il codice R# create DESeq objects (Dataset)\ndds &lt;- DESeqDataSetFromMatrix(\n  countData = readcounts,\n  colData = coldata,\n  design = ~infection\n)\n#&gt; Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in\n#&gt; design formula are characters, converting to factors\n\n# remove genes with less than 5 counts\ndds &lt;- dds[rowSums(counts(dds)) &gt; 5, ]\n\n# ALTERNATIVE: retain genes with 5 or more counts across 10 of your samples\n# keep &lt;- rowSums(counts(dds) &gt;= 2) &gt;= 5\n# dds &lt;- dds[keep,]\n\ndatatable(counts(dds)[1:25, 1:4],\n  options = list(\n    pageLength = 5,\n    autoWidth = TRUE,\n    dom = \"Bfrtip\",\n    filter = \"top\"\n  ), rownames = TRUE\n)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Filtraggio</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#summarized-experiment",
+    "href": "sec-preproc_import.html#summarized-experiment",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.4 Summarized experiment",
+    "text": "1.4 Summarized experiment\n\n\n\n\n\n\n\n\nNel mondo dell’analisi genomica, la gestione e l’organizzazione dei dati sono fondamentali. La classe SummarizedExperiment offre una soluzione robusta ed efficiente per archiviare e manipolare dati provenienti da esperimenti di sequenziamento e microarray, come RNA-Seq e ChIP-Seq.\nImmagina un contenitore simile a una matrice in cui:\n\n\nLe righe rappresentano le caratteristiche di interesse: geni, trascritti, esoni, o qualsiasi altra unità genomica che stai studiando.\n\nLe colonne rappresentano i campioni: individui, tessuti, o condizioni sperimentali diverse.\n\nAll’interno di questo contenitore, SummarizedExperiment memorizza non solo i dati grezzi dell’esperimento (ad esempio, il conteggio delle reads per ogni gene in ogni campione), ma anche informazioni cruciali sui campioni e sulle caratteristiche stesse.\nEcco i componenti principali di un SummarizedExperiment:\n\n\nSaggi (assays): Matrici contenenti i dati quantitativi dell’esperimento. Possono essere presenti più saggi all’interno dello stesso oggetto, ad esempio per memorizzare diverse tipologie di dati omici.\n\nMetadati del campione (colData): Un data.frame che associa a ciascun campione informazioni aggiuntive come età, sesso, condizione di salute, o qualsiasi altra variabile rilevante per l’analisi.\n\nMetadati delle caratteristiche (rowData): Un data.frame che descrive le caratteristiche, fornendo ad esempio ID genetici, annotazioni funzionali, o posizione genomica.\n\nVantaggi di SummarizedExperiment:\n\n\nCoordinamento tra dati e metadati: SummarizedExperiment garantisce la sincronizzazione tra i dati sperimentali e i metadati. Se escludi un campione dai dati, le informazioni corrispondenti nei metadati vengono automaticamente rimosse, evitando errori e incongruenze.\n\nFlessibilità: SummarizedExperiment può gestire diverse tipologie di dati e metadati, adattandosi a una vasta gamma di esperimenti genomici.\n\nEfficienza: La struttura organizzata di SummarizedExperiment facilita l’accesso e la manipolazione dei dati, semplificando le analisi a valle.\n\n\n1.4.1 Esempio:\nIn un esperimento di RNA-Seq, SummarizedExperiment potrebbe contenere:\n\n\nSaggio: una matrice con i conteggi di reads per ogni gene (riga) in ciascun campione (colonna).\n\nMetadati del campione: informazioni sul tessuto di origine di ciascun campione (es. cervello, fegato, ecc.).\n\nMetadati delle caratteristiche: annotazioni funzionali dei geni (es. gene codificante per una proteina, gene non codificante, ecc.).\n\nIl pacchetto airway contiene un dataset di esempio proveniente da un esperimento di RNA-Seq che misura il numero di reads per gene in cellule di muscolatura liscia delle vie aeree.\n\nMostra il codice Rlibrary(SummarizedExperiment)\ndata(airway, package=\"airway\")\n\nairway\n\nclass: RangedSummarizedExperiment \ndim: 63677 8 \nmetadata(1): ''\nassays(1): counts\nrownames(63677): ENSG00000000003 ENSG00000000005 ... ENSG00000273492\n  ENSG00000273493\nrowData names(10): gene_id gene_name ... seq_coord_system symbol\ncolnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521\ncolData names(9): SampleName cell ... Sample BioSample\n\n\nSaggio:\n\nMostra il codice Rassay(airway)[1:20, 1:5]\n\n                SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516\nENSG00000000003        679        448        873        408       1138\nENSG00000000005          0          0          0          0          0\nENSG00000000419        467        515        621        365        587\nENSG00000000457        260        211        263        164        245\nENSG00000000460         60         55         40         35         78\nENSG00000000938          0          0          2          0          1\nENSG00000000971       3251       3679       6177       4252       6721\nENSG00000001036       1433       1062       1733        881       1424\nENSG00000001084        519        380        595        493        820\nENSG00000001167        394        236        464        175        658\nENSG00000001460        172        168        264        118        241\nENSG00000001461       2112       1867       5137       2657       2735\nENSG00000001497        524        488        638        357        676\nENSG00000001561         71         51        211        156         23\nENSG00000001617        555        394        905        415        727\nENSG00000001626         10          2          9          2         10\nENSG00000001629       1660       1251       2259       1079       2462\nENSG00000001630         59         54         66         23         84\nENSG00000001631        729        692        943        475       1034\nENSG00000002016        201        161        256         99        268\n\n\nMetadati del campione:\n\nMostra il codice RcolData(airway)\n\nDataFrame with 8 rows and 9 columns\n           SampleName     cell      dex    albut        Run avgLength\n             &lt;factor&gt; &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;   &lt;factor&gt; &lt;integer&gt;\nSRR1039508 GSM1275862  N61311     untrt    untrt SRR1039508       126\nSRR1039509 GSM1275863  N61311     trt      untrt SRR1039509       126\nSRR1039512 GSM1275866  N052611    untrt    untrt SRR1039512       126\nSRR1039513 GSM1275867  N052611    trt      untrt SRR1039513        87\nSRR1039516 GSM1275870  N080611    untrt    untrt SRR1039516       120\nSRR1039517 GSM1275871  N080611    trt      untrt SRR1039517       126\nSRR1039520 GSM1275874  N061011    untrt    untrt SRR1039520       101\nSRR1039521 GSM1275875  N061011    trt      untrt SRR1039521        98\n           Experiment    Sample    BioSample\n             &lt;factor&gt;  &lt;factor&gt;     &lt;factor&gt;\nSRR1039508  SRX384345 SRS508568 SAMN02422669\nSRR1039509  SRX384346 SRS508567 SAMN02422675\nSRR1039512  SRX384349 SRS508571 SAMN02422678\nSRR1039513  SRX384350 SRS508572 SAMN02422670\nSRR1039516  SRX384353 SRS508575 SAMN02422682\nSRR1039517  SRX384354 SRS508576 SAMN02422673\nSRR1039520  SRX384357 SRS508579 SAMN02422683\nSRR1039521  SRX384358 SRS508580 SAMN02422677\n\n\nMetadati delle caratteristiche:\n\nMostra il codice RrowData(airway)\n\nDataFrame with 63677 rows and 10 columns\n                        gene_id     gene_name  entrezid   gene_biotype\n                    &lt;character&gt;   &lt;character&gt; &lt;integer&gt;    &lt;character&gt;\nENSG00000000003 ENSG00000000003        TSPAN6        NA protein_coding\nENSG00000000005 ENSG00000000005          TNMD        NA protein_coding\nENSG00000000419 ENSG00000000419          DPM1        NA protein_coding\nENSG00000000457 ENSG00000000457         SCYL3        NA protein_coding\nENSG00000000460 ENSG00000000460      C1orf112        NA protein_coding\n...                         ...           ...       ...            ...\nENSG00000273489 ENSG00000273489 RP11-180C16.1        NA      antisense\nENSG00000273490 ENSG00000273490        TSEN34        NA protein_coding\nENSG00000273491 ENSG00000273491  RP11-138A9.2        NA        lincRNA\nENSG00000273492 ENSG00000273492    AP000230.1        NA        lincRNA\nENSG00000273493 ENSG00000273493  RP11-80H18.4        NA        lincRNA\n                gene_seq_start gene_seq_end              seq_name seq_strand\n                     &lt;integer&gt;    &lt;integer&gt;           &lt;character&gt;  &lt;integer&gt;\nENSG00000000003       99883667     99894988                     X         -1\nENSG00000000005       99839799     99854882                     X          1\nENSG00000000419       49551404     49575092                    20         -1\nENSG00000000457      169818772    169863408                     1         -1\nENSG00000000460      169631245    169823221                     1          1\n...                        ...          ...                   ...        ...\nENSG00000273489      131178723    131182453                     7         -1\nENSG00000273490       54693789     54697585 HSCHR19LRC_LRC_J_CTG1          1\nENSG00000273491      130600118    130603315          HG1308_PATCH          1\nENSG00000273492       27543189     27589700                    21          1\nENSG00000273493       58315692     58315845                     3          1\n                seq_coord_system        symbol\n                       &lt;integer&gt;   &lt;character&gt;\nENSG00000000003               NA        TSPAN6\nENSG00000000005               NA          TNMD\nENSG00000000419               NA          DPM1\nENSG00000000457               NA         SCYL3\nENSG00000000460               NA      C1orf112\n...                          ...           ...\nENSG00000273489               NA RP11-180C16.1\nENSG00000273490               NA        TSEN34\nENSG00000273491               NA  RP11-138A9.2\nENSG00000273492               NA    AP000230.1\nENSG00000273493               NA  RP11-80H18.4",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "sec-preproc_import.html#memorizzare-dati-genomici-con-summarizedexperiment-una-soluzione-efficiente",
+    "href": "sec-preproc_import.html#memorizzare-dati-genomici-con-summarizedexperiment-una-soluzione-efficiente",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.5 Memorizzare dati genomici con SummarizedExperiment: una soluzione efficiente",
+    "text": "1.5 Memorizzare dati genomici con SummarizedExperiment: una soluzione efficiente\nNel mondo dell’analisi genomica, la gestione e l’organizzazione dei dati sono fondamentali. La classe SummarizedExperiment offre una soluzione robusta ed efficiente per archiviare e manipolare dati provenienti da esperimenti di sequenziamento e microarray, come RNA-Seq e ChIP-Seq.\nImmagina un contenitore simile a una matrice in cui:\n\n\nLe righe rappresentano le caratteristiche di interesse: geni, trascritti, esoni, o qualsiasi altra unità genomica che stai studiando.\n\nLe colonne rappresentano i campioni: individui, tessuti, o condizioni sperimentali diverse.\n\nAll’interno di questo contenitore, SummarizedExperiment memorizza non solo i dati grezzi dell’esperimento (ad esempio, il conteggio delle reads per ogni gene in ogni campione), ma anche informazioni cruciali sui campioni e sulle caratteristiche stesse.\nEcco i componenti principali di un SummarizedExperiment:\n\n\nSaggi (assays): Matrici contenenti i dati quantitativi dell’esperimento. Possono essere presenti più saggi all’interno dello stesso oggetto, ad esempio per memorizzare diverse tipologie di dati omici.\n\nMetadati del campione (colData): Un data.frame che associa a ciascun campione informazioni aggiuntive come età, sesso, condizione di salute, o qualsiasi altra variabile rilevante per l’analisi.\n\nMetadati delle caratteristiche (rowData): Un data.frame che descrive le caratteristiche, fornendo ad esempio ID genetici, annotazioni funzionali, o posizione genomica.\n\nVantaggi di SummarizedExperiment:\n\n\nCoordinamento tra dati e metadati: SummarizedExperiment garantisce la sincronizzazione tra i dati sperimentali e i metadati. Se escludi un campione dai dati, le informazioni corrispondenti nei metadati vengono automaticamente rimosse, evitando errori e incongruenze.\n\nFlessibilità: SummarizedExperiment può gestire diverse tipologie di dati e metadati, adattandosi a una vasta gamma di esperimenti genomici.\n\nEfficienza: La struttura organizzata di SummarizedExperiment facilita l’accesso e la manipolazione dei dati, semplificando le analisi a valle.\n\n\n1.5.1 Esempio:\nIn un esperimento di RNA-Seq, SummarizedExperiment potrebbe contenere:\n\n\nSaggio: una matrice con i conteggi di reads per ogni gene (riga) in ciascun campione (colonna).\n\nMetadati del campione: informazioni sul tessuto di origine di ciascun campione (es. cervello, fegato, ecc.).\n\nMetadati delle caratteristiche: annotazioni funzionali dei geni (es. gene codificante per una proteina, gene non codificante, ecc.).\n\nIl pacchetto airway contiene un dataset di esempio proveniente da un esperimento di RNA-Seq che misura il numero di reads per gene in cellule di muscolatura liscia delle vie aeree.\n\nMostra il codice Rlibrary(SummarizedExperiment)\ndata(airway, package=\"airway\")\n\nairway\n\nclass: RangedSummarizedExperiment \ndim: 63677 8 \nmetadata(1): ''\nassays(1): counts\nrownames(63677): ENSG00000000003 ENSG00000000005 ... ENSG00000273492\n  ENSG00000273493\nrowData names(10): gene_id gene_name ... seq_coord_system symbol\ncolnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521\ncolData names(9): SampleName cell ... Sample BioSample\n\n\nSaggio:\n\nMostra il codice Rassay(airway)[1:20, 1:5]\n\n                SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516\nENSG00000000003        679        448        873        408       1138\nENSG00000000005          0          0          0          0          0\nENSG00000000419        467        515        621        365        587\nENSG00000000457        260        211        263        164        245\nENSG00000000460         60         55         40         35         78\nENSG00000000938          0          0          2          0          1\nENSG00000000971       3251       3679       6177       4252       6721\nENSG00000001036       1433       1062       1733        881       1424\nENSG00000001084        519        380        595        493        820\nENSG00000001167        394        236        464        175        658\nENSG00000001460        172        168        264        118        241\nENSG00000001461       2112       1867       5137       2657       2735\nENSG00000001497        524        488        638        357        676\nENSG00000001561         71         51        211        156         23\nENSG00000001617        555        394        905        415        727\nENSG00000001626         10          2          9          2         10\nENSG00000001629       1660       1251       2259       1079       2462\nENSG00000001630         59         54         66         23         84\nENSG00000001631        729        692        943        475       1034\nENSG00000002016        201        161        256         99        268\n\n\nMetadati del campione:\n\nMostra il codice RcolData(airway)\n\nDataFrame with 8 rows and 9 columns\n           SampleName     cell      dex    albut        Run avgLength\n             &lt;factor&gt; &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;   &lt;factor&gt; &lt;integer&gt;\nSRR1039508 GSM1275862  N61311     untrt    untrt SRR1039508       126\nSRR1039509 GSM1275863  N61311     trt      untrt SRR1039509       126\nSRR1039512 GSM1275866  N052611    untrt    untrt SRR1039512       126\nSRR1039513 GSM1275867  N052611    trt      untrt SRR1039513        87\nSRR1039516 GSM1275870  N080611    untrt    untrt SRR1039516       120\nSRR1039517 GSM1275871  N080611    trt      untrt SRR1039517       126\nSRR1039520 GSM1275874  N061011    untrt    untrt SRR1039520       101\nSRR1039521 GSM1275875  N061011    trt      untrt SRR1039521        98\n           Experiment    Sample    BioSample\n             &lt;factor&gt;  &lt;factor&gt;     &lt;factor&gt;\nSRR1039508  SRX384345 SRS508568 SAMN02422669\nSRR1039509  SRX384346 SRS508567 SAMN02422675\nSRR1039512  SRX384349 SRS508571 SAMN02422678\nSRR1039513  SRX384350 SRS508572 SAMN02422670\nSRR1039516  SRX384353 SRS508575 SAMN02422682\nSRR1039517  SRX384354 SRS508576 SAMN02422673\nSRR1039520  SRX384357 SRS508579 SAMN02422683\nSRR1039521  SRX384358 SRS508580 SAMN02422677\n\n\nMetadati delle caratteristiche:\n\nMostra il codice RrowData(airway)\n\nDataFrame with 63677 rows and 10 columns\n                        gene_id     gene_name  entrezid   gene_biotype\n                    &lt;character&gt;   &lt;character&gt; &lt;integer&gt;    &lt;character&gt;\nENSG00000000003 ENSG00000000003        TSPAN6        NA protein_coding\nENSG00000000005 ENSG00000000005          TNMD        NA protein_coding\nENSG00000000419 ENSG00000000419          DPM1        NA protein_coding\nENSG00000000457 ENSG00000000457         SCYL3        NA protein_coding\nENSG00000000460 ENSG00000000460      C1orf112        NA protein_coding\n...                         ...           ...       ...            ...\nENSG00000273489 ENSG00000273489 RP11-180C16.1        NA      antisense\nENSG00000273490 ENSG00000273490        TSEN34        NA protein_coding\nENSG00000273491 ENSG00000273491  RP11-138A9.2        NA        lincRNA\nENSG00000273492 ENSG00000273492    AP000230.1        NA        lincRNA\nENSG00000273493 ENSG00000273493  RP11-80H18.4        NA        lincRNA\n                gene_seq_start gene_seq_end              seq_name seq_strand\n                     &lt;integer&gt;    &lt;integer&gt;           &lt;character&gt;  &lt;integer&gt;\nENSG00000000003       99883667     99894988                     X         -1\nENSG00000000005       99839799     99854882                     X          1\nENSG00000000419       49551404     49575092                    20         -1\nENSG00000000457      169818772    169863408                     1         -1\nENSG00000000460      169631245    169823221                     1          1\n...                        ...          ...                   ...        ...\nENSG00000273489      131178723    131182453                     7         -1\nENSG00000273490       54693789     54697585 HSCHR19LRC_LRC_J_CTG1          1\nENSG00000273491      130600118    130603315          HG1308_PATCH          1\nENSG00000273492       27543189     27589700                    21          1\nENSG00000273493       58315692     58315845                     3          1\n                seq_coord_system        symbol\n                       &lt;integer&gt;   &lt;character&gt;\nENSG00000000003               NA        TSPAN6\nENSG00000000005               NA          TNMD\nENSG00000000419               NA          DPM1\nENSG00000000457               NA         SCYL3\nENSG00000000460               NA      C1orf112\n...                          ...           ...\nENSG00000273489               NA RP11-180C16.1\nENSG00000273490               NA        TSEN34\nENSG00000273491               NA  RP11-138A9.2\nENSG00000273492               NA    AP000230.1\nENSG00000273493               NA  RP11-80H18.4",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_a_sec-preproc_import.html",
+    "href": "001_a_sec-preproc_import.html",
+    "title": "1  Importazione dei dati",
+    "section": "",
+    "text": "1.1 Descrizione del dataset\nStato: Pubblico dal 14 giugno 2017Titolo: L’effetto dell’infezione delle vie respiratorie superiori sui cambiamenti trascrittomici nel SNCOrganismo: Mus musculus (topo domestico)Tipo di esperimento: Profilo di espressione mediante sequenziamento ad alta produttività\nSommario:\nDisegno complessivo: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_a_sec-preproc_import.html#descrizione-del-dataset",
+    "href": "001_a_sec-preproc_import.html#descrizione-del-dataset",
+    "title": "1  Importazione dei dati",
+    "section": "",
+    "text": "Scopo: L’obiettivo di questo studio era determinare l’effetto di un’infezione delle vie respiratorie superiori sui cambiamenti nella trascrizione dell’RNA che si verificano nel cervelletto e nel midollo spinale dopo l’infezione.\n\n\nMetodi: Topi C57BL/6 di otto settimane di età, appaiati per sesso, sono stati inoculati con soluzione salina o con Influenza A (Puerto Rico/8/34; PR8, 1.0 HAU) per via intranasale e i cambiamenti trascrittomici nei tessuti del cervelletto e del midollo spinale sono stati valutati mediante RNA-seq (letture paired-end da 100 bp) ai giorni 0 (non infetti), 4 e 8.\n\n\nRisultati: Dopo il trimming e l’esclusione delle letture multi-mapping, una media del 92,07% (cervelletto) e del 91,71% (midollo spinale) dei geni sono stati mappati in modo univoco a un gene. Il numero medio di letture single-end per campione era 36,42 e 37 milioni rispettivamente per il midollo spinale e il cervelletto. L’infezione ha causato cambiamenti significativi al trascrittoma di ciascun tessuto, che sono stati più evidenti al giorno 8 dopo l’infezione.\n\n\nConclusione: Questo studio è il primo a utilizzare la tecnologia RNA-seq per valutare l’effetto dell’infezione periferica da influenza A sui cambiamenti nell’espressione genica del cervelletto e del midollo spinale.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_a_sec-preproc_import.html#lista-dei-campioni",
+    "href": "001_a_sec-preproc_import.html#lista-dei-campioni",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.2 Lista dei campioni",
+    "text": "1.2 Lista dei campioni\n\nMostra il codice R# downloading raw data\nif(!fs::dir_exists(\"data\")){\n  fs::dir_create(\"data\")\n}\n\n# The dataset is available at Gene Expression Omnibus (GEO), under the accession number GSE96870. \nif(!fs::file_exists(\"data/GSE96870_counts_cerebellum.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_counts_cerebellum.csv\", \n  destfile = \"data/GSE96870_counts_cerebellum.csv\"\n)\n}\n\nif(!fs::file_exists(\"data/GSE96870_coldata_all.csv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_coldata_all.csv\", \n  destfile = \"data/GSE96870_coldata_all.csv\"\n  )\n}\n\nif(!fs::file_exists(\"data/GSE96870_rowranges.tsv\")){\n  download.file(\n  url = \"https://github.com/carpentries-incubator/bioc-rnaseq/raw/main/episodes/data/GSE96870_rowranges.tsv\", \n  destfile = \"data/GSE96870_rowranges.tsv\"\n)\n}\n\n# read all data description\ncoldata_all &lt;- read_csv(\"data/GSE96870_coldata_all.csv\")\n\ndatatable(coldata_all |&gt; select(sample, sex, infection, time, tissue),\n  options = list(\n  columnDefs = list(list(className = 'dt-center', targets = 5)),\n  pageLength = 10,\n  lengthMenu = c(10, 20, 30, 40 , 50)\n))",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_a_sec-preproc_import.html#summary-dei-campioni",
+    "href": "001_a_sec-preproc_import.html#summary-dei-campioni",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.3 Summary dei campioni",
+    "text": "1.3 Summary dei campioni\n\nMostra il codice Rdatatable(coldata_all |&gt; dplyr::count(sex, infection, time, tissue),\n  options = list(\n  columnDefs = list(list(className = 'dt-center', targets = 5)),\n  pageLength = 12\n))",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_a_sec-preproc_import.html#summarized-experiment",
+    "href": "001_a_sec-preproc_import.html#summarized-experiment",
+    "title": "1  Importazione dei dati",
+    "section": "\n1.4 Summarized experiment",
+    "text": "1.4 Summarized experiment\n\n\n\n\n\n\n\n\nNel mondo dell’analisi genomica, la gestione e l’organizzazione dei dati sono fondamentali. La classe SummarizedExperiment offre una soluzione robusta ed efficiente per archiviare e manipolare dati provenienti da esperimenti di sequenziamento e microarray, come RNA-Seq e ChIP-Seq.\nImmagina un contenitore simile a una matrice in cui:\n\n\nLe righe rappresentano le caratteristiche di interesse: geni, trascritti, esoni, o qualsiasi altra unità genomica che stai studiando.\n\nLe colonne rappresentano i campioni: individui, tessuti, o condizioni sperimentali diverse.\n\nAll’interno di questo contenitore, SummarizedExperiment memorizza non solo i dati grezzi dell’esperimento (ad esempio, il conteggio delle reads per ogni gene in ogni campione), ma anche informazioni cruciali sui campioni e sulle caratteristiche stesse.\nEcco i componenti principali di un SummarizedExperiment:\n\n\nSaggi (assays): Matrici contenenti i dati quantitativi dell’esperimento. Possono essere presenti più saggi all’interno dello stesso oggetto, ad esempio per memorizzare diverse tipologie di dati omici.\n\nMetadati del campione (colData): Un data.frame che associa a ciascun campione informazioni aggiuntive come età, sesso, condizione di salute, o qualsiasi altra variabile rilevante per l’analisi.\n\nMetadati delle caratteristiche (rowData): Un data.frame che descrive le caratteristiche, fornendo ad esempio ID genetici, annotazioni funzionali, o posizione genomica.\n\nVantaggi di SummarizedExperiment:\n\n\nCoordinamento tra dati e metadati: SummarizedExperiment garantisce la sincronizzazione tra i dati sperimentali e i metadati. Se escludi un campione dai dati, le informazioni corrispondenti nei metadati vengono automaticamente rimosse, evitando errori e incongruenze.\n\nFlessibilità: SummarizedExperiment può gestire diverse tipologie di dati e metadati, adattandosi a una vasta gamma di esperimenti genomici.\n\nEfficienza: La struttura organizzata di SummarizedExperiment facilita l’accesso e la manipolazione dei dati, semplificando le analisi a valle.\n\n\n1.4.1 Esempio:\nIn un esperimento di RNA-Seq, SummarizedExperiment potrebbe contenere:\n\n\nSaggio: una matrice con i conteggi di reads per ogni gene (riga) in ciascun campione (colonna).\n\nMetadati del campione: informazioni sul tessuto di origine di ciascun campione (es. cervello, fegato, ecc.).\n\nMetadati delle caratteristiche: annotazioni funzionali dei geni (es. gene codificante per una proteina, gene non codificante, ecc.).\n\nIl pacchetto airway contiene un dataset di esempio proveniente da un esperimento di RNA-Seq che misura il numero di reads per gene in cellule di muscolatura liscia delle vie aeree.\n\nMostra il codice Rlibrary(SummarizedExperiment)\ndata(airway, package=\"airway\")\n\nairway\n\nclass: RangedSummarizedExperiment \ndim: 63677 8 \nmetadata(1): ''\nassays(1): counts\nrownames(63677): ENSG00000000003 ENSG00000000005 ... ENSG00000273492\n  ENSG00000273493\nrowData names(10): gene_id gene_name ... seq_coord_system symbol\ncolnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521\ncolData names(9): SampleName cell ... Sample BioSample\n\n\nSaggio:\n\nMostra il codice Rassay(airway)[1:20, 1:5]\n\n                SRR1039508 SRR1039509 SRR1039512 SRR1039513 SRR1039516\nENSG00000000003        679        448        873        408       1138\nENSG00000000005          0          0          0          0          0\nENSG00000000419        467        515        621        365        587\nENSG00000000457        260        211        263        164        245\nENSG00000000460         60         55         40         35         78\nENSG00000000938          0          0          2          0          1\nENSG00000000971       3251       3679       6177       4252       6721\nENSG00000001036       1433       1062       1733        881       1424\nENSG00000001084        519        380        595        493        820\nENSG00000001167        394        236        464        175        658\nENSG00000001460        172        168        264        118        241\nENSG00000001461       2112       1867       5137       2657       2735\nENSG00000001497        524        488        638        357        676\nENSG00000001561         71         51        211        156         23\nENSG00000001617        555        394        905        415        727\nENSG00000001626         10          2          9          2         10\nENSG00000001629       1660       1251       2259       1079       2462\nENSG00000001630         59         54         66         23         84\nENSG00000001631        729        692        943        475       1034\nENSG00000002016        201        161        256         99        268\n\n\nMetadati del campione:\n\nMostra il codice RcolData(airway)\n\nDataFrame with 8 rows and 9 columns\n           SampleName     cell      dex    albut        Run avgLength\n             &lt;factor&gt; &lt;factor&gt; &lt;factor&gt; &lt;factor&gt;   &lt;factor&gt; &lt;integer&gt;\nSRR1039508 GSM1275862  N61311     untrt    untrt SRR1039508       126\nSRR1039509 GSM1275863  N61311     trt      untrt SRR1039509       126\nSRR1039512 GSM1275866  N052611    untrt    untrt SRR1039512       126\nSRR1039513 GSM1275867  N052611    trt      untrt SRR1039513        87\nSRR1039516 GSM1275870  N080611    untrt    untrt SRR1039516       120\nSRR1039517 GSM1275871  N080611    trt      untrt SRR1039517       126\nSRR1039520 GSM1275874  N061011    untrt    untrt SRR1039520       101\nSRR1039521 GSM1275875  N061011    trt      untrt SRR1039521        98\n           Experiment    Sample    BioSample\n             &lt;factor&gt;  &lt;factor&gt;     &lt;factor&gt;\nSRR1039508  SRX384345 SRS508568 SAMN02422669\nSRR1039509  SRX384346 SRS508567 SAMN02422675\nSRR1039512  SRX384349 SRS508571 SAMN02422678\nSRR1039513  SRX384350 SRS508572 SAMN02422670\nSRR1039516  SRX384353 SRS508575 SAMN02422682\nSRR1039517  SRX384354 SRS508576 SAMN02422673\nSRR1039520  SRX384357 SRS508579 SAMN02422683\nSRR1039521  SRX384358 SRS508580 SAMN02422677\n\n\nMetadati delle caratteristiche:\n\nMostra il codice RrowData(airway)\n\nDataFrame with 63677 rows and 10 columns\n                        gene_id     gene_name  entrezid   gene_biotype\n                    &lt;character&gt;   &lt;character&gt; &lt;integer&gt;    &lt;character&gt;\nENSG00000000003 ENSG00000000003        TSPAN6        NA protein_coding\nENSG00000000005 ENSG00000000005          TNMD        NA protein_coding\nENSG00000000419 ENSG00000000419          DPM1        NA protein_coding\nENSG00000000457 ENSG00000000457         SCYL3        NA protein_coding\nENSG00000000460 ENSG00000000460      C1orf112        NA protein_coding\n...                         ...           ...       ...            ...\nENSG00000273489 ENSG00000273489 RP11-180C16.1        NA      antisense\nENSG00000273490 ENSG00000273490        TSEN34        NA protein_coding\nENSG00000273491 ENSG00000273491  RP11-138A9.2        NA        lincRNA\nENSG00000273492 ENSG00000273492    AP000230.1        NA        lincRNA\nENSG00000273493 ENSG00000273493  RP11-80H18.4        NA        lincRNA\n                gene_seq_start gene_seq_end              seq_name seq_strand\n                     &lt;integer&gt;    &lt;integer&gt;           &lt;character&gt;  &lt;integer&gt;\nENSG00000000003       99883667     99894988                     X         -1\nENSG00000000005       99839799     99854882                     X          1\nENSG00000000419       49551404     49575092                    20         -1\nENSG00000000457      169818772    169863408                     1         -1\nENSG00000000460      169631245    169823221                     1          1\n...                        ...          ...                   ...        ...\nENSG00000273489      131178723    131182453                     7         -1\nENSG00000273490       54693789     54697585 HSCHR19LRC_LRC_J_CTG1          1\nENSG00000273491      130600118    130603315          HG1308_PATCH          1\nENSG00000273492       27543189     27589700                    21          1\nENSG00000273493       58315692     58315845                     3          1\n                seq_coord_system        symbol\n                       &lt;integer&gt;   &lt;character&gt;\nENSG00000000003               NA        TSPAN6\nENSG00000000005               NA          TNMD\nENSG00000000419               NA          DPM1\nENSG00000000457               NA         SCYL3\nENSG00000000460               NA      C1orf112\n...                          ...           ...\nENSG00000273489               NA RP11-180C16.1\nENSG00000273490               NA        TSEN34\nENSG00000273491               NA  RP11-138A9.2\nENSG00000273492               NA    AP000230.1\nENSG00000273493               NA  RP11-80H18.4",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Importazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_b_sec-preproc_params.html",
+    "href": "001_b_sec-preproc_params.html",
+    "title": "2  Disegno Sperimentale",
+    "section": "",
+    "text": "2.1 Confronto",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "001_b_sec-preproc_params.html#confronto",
+    "href": "001_b_sec-preproc_params.html#confronto",
+    "title": "2  Disegno Sperimentale",
+    "section": "",
+    "text": "Tutti i rapporti devono essere considerati come InfluenzaA rispetto a NonInfected\n\nUn rapporto di fold change &gt; 1 (o logFCRatio positivo) indica sovraespressione nella condizione InfluenzaA\n\nUn rapporto di fold change &lt; 1 (o logFCRatio negativo) indica sovraespressione nella condizione NonInfected",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "001_b_sec-preproc_params.html#cutoff-di-fold-change-e-p-value-utilizzati",
+    "href": "001_b_sec-preproc_params.html#cutoff-di-fold-change-e-p-value-utilizzati",
+    "title": "2  Disegno Sperimentale",
+    "section": "\n2.2 Cutoff di Fold Change e p-Value utilizzati",
+    "text": "2.2 Cutoff di Fold Change e p-Value utilizzati\n\nCutoff di Log Fold Change = 0.8\n\nCutoff di P-Value = 0.01\n\nI p-value aggiustati sono determinati con il metodo fdr\n\n\nI dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\nPer questo report, tutti e solo i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale viene scartato e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni non presenti nel confronto possano avere sulla trasformazione e normalizzazione dei campioni presenti nel confronto.\nI campioni presi in considerazione in questa analisi appartengono ai gruppi: InfluenzaA e NonInfected.\nQuesto è il layout del samplesheet, ovvero l’associazione tra i singoli campioni e i gruppi di campioni:",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Disegno Sperimentale</span>"
+    ]
+  },
+  {
+    "objectID": "001_c_sec-preproc_filtraggio.html",
+    "href": "001_c_sec-preproc_filtraggio.html",
+    "title": "3  Filtraggio",
+    "section": "",
+    "text": "Le righe (cioè i geni) del dataset originale che hanno meno di 5 conteggi di lettura sono state filtrate: questo è un modo standard per rimuovere i geni non espressi e rendere la tabella dei dati più leggera, poiché molti geni sono per lo più non espressi. In casi particolari può essere utilizzato un numero diverso (più alto), al fine di essere più stringenti.\nNella tabella sottostante un sotto insieme dei campioni: 25 osservazioni (geni) e 4 variabili (individui).\n\nMostra il codice R# create DESeq objects (Dataset)\ndds &lt;- DESeqDataSetFromMatrix(\n  countData = readcounts,\n  colData = coldata,\n  design = ~infection\n)\n#&gt; Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in\n#&gt; design formula are characters, converting to factors\n\n# remove genes with less than 5 counts\ndds &lt;- dds[rowSums(counts(dds)) &gt; 5, ]\n\ndatatable(counts(dds)[1:25, 1:4],\n  options = list(\n    pageLength = 5,\n    autoWidth = TRUE,\n    dom = \"Bfrtip\",\n    filter = \"top\"\n  ), rownames = TRUE\n)\n\n\n\n\nMostra il codice R\nsaveRDS(dds, \"data/dds_fitered.rds\")",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Filtraggio</span>"
+    ]
+  },
+  {
+    "objectID": "001_sec-preproc.html",
+    "href": "001_sec-preproc.html",
+    "title": "Preparazione ed esplorazione dei dati",
+    "section": "",
+    "text": "Nella fase iniziale del workflow con DESeq2, si importa la matrice di conteggio, si definisce il disegno sperimentale con i relativi metadati e si analizzano i dati grezzi per identificarne le caratteristiche. Si valuta la qualità dei dati, le relazioni tra i campioni e la presenza di outlier. Si applica poi una trasformazione per stabilizzare la varianza e si filtrano i geni a bassa espressione per ottimizzare l’analisi differenziale.\n\n\n\n\n\n\n\nFigure 1: La fase di ‘Preparazione e esplorazione dei dati’ nell’analisi RNA-seq consiste nell’organizzare, visualizzare e interpretare i dati grezzi per individuare pattern, tendenze e anomalie. Questo processo è cruciale per preparare i dati all’analisi differenziale e ottenere risultati affidabili.\n\n\n\n\nCapitoli di questa sezione:\n\nNel capitolo 1  Importazione dei dati\n\nNel capitolo 2  Disegno Sperimentale definiremo i campioni e i parametri da usare",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati"
+    ]
+  },
+  {
+    "objectID": "001_d_sec-preproc_EDA_raw.html",
+    "href": "001_d_sec-preproc_EDA_raw.html",
+    "title": "4  Esplorazione dei Dati",
+    "section": "",
+    "text": "4.1 Distribuzione dei conteggi\nMostra il codice Rlibrary(patchwork)\n#&gt; \n#&gt; Attaching package: 'patchwork'\n#&gt; The following object is masked from 'package:cowplot':\n#&gt; \n#&gt;     align_plots\np1 &lt;- readcounts |&gt; \n  tibble() |&gt; \n  pivot_longer(cols = everything(),\n               names_to = \"Sample\",\n               values_to = \"Reads\") |&gt; \n  ggplot(aes(Sample, Reads)) +\n  geom_boxplot() +\n  labs(title = \"RAW data\",\n       y = \"Number of reads\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\np2 &lt;- readcounts |&gt; \n  tibble() |&gt; \n  pivot_longer(cols = everything(),\n               names_to = \"Sample\",\n               values_to = \"Reads\") |&gt; \n  ggplot(aes(Sample, Reads)) +\n  geom_boxplot() +\n  scale_y_log10() +\n  labs(title = \"Data in log scale\",\n       y = \"Number of reads\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\np1 + p2\n#&gt; Warning in scale_y_log10(): log-10 transformation introduced infinite\n#&gt; values.\n#&gt; Warning: Removed 372413 rows containing non-finite outside the scale range\n#&gt; (`stat_boxplot()`).",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_d_sec-preproc_EDA_raw.html#differenze-nella-dimensione-della-libreria",
+    "href": "001_d_sec-preproc_EDA_raw.html#differenze-nella-dimensione-della-libreria",
+    "title": "4  Esplorazione dei Dati",
+    "section": "\n4.2 Differenze nella dimensione della libreria",
+    "text": "4.2 Differenze nella dimensione della libreria\n\nMostra il codice Rtmp &lt;- colSums(readcounts) \ntibble(Label = names(tmp),\n       libSize = tmp) |&gt;\n  left_join(coldata |&gt; select(Label = geo_accession, Group = infection)) |&gt; \n  ggplot(aes(x = Label, y = libSize / 1e6, fill = Group)) + \n         geom_bar(stat = \"identity\") + theme_bw() + \n         labs(x = \"Sample\", y = \"Total count in millions\") + \n         theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +\n  scale_fill_brewer(palette = \"Set1\")\n#&gt; Joining with `by = join_by(Label)`",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_d_sec-preproc_EDA_raw.html#variabilità-dellespressione-genica",
+    "href": "001_d_sec-preproc_EDA_raw.html#variabilità-dellespressione-genica",
+    "title": "4  Esplorazione dei Dati",
+    "section": "\n4.3 Variabilità dell’espressione genica",
+    "text": "4.3 Variabilità dell’espressione genica\n\nMostra il codice Rp1 &lt;- readcounts |&gt; \n  ggplot(aes(x = GSM2545336, y = GSM2545336)) +\n  geom_point()+\n  geom_abline(slope = 1) +\n  labs(title = \"Stesso campione\")\n\np2 &lt;- readcounts |&gt; \n  ggplot(aes(x = GSM2545337, y = GSM2545338)) +\n  geom_point()+\n  geom_abline(slope = 1) +\n  labs(title = \"Due campioni controllo\")\n\np3 &lt;- readcounts |&gt; \n  ggplot(aes(x = GSM2545339, y = GSM2545341)) +\n  geom_point()+\n  geom_abline(slope = 1) +\n  labs(title = \"Due campioni trattato\")\n\np4 &lt;- readcounts |&gt; \n  ggplot(aes(x = GSM2545338, y = GSM2545342)) +\n  geom_point() +\n  geom_abline(slope = 1)+\n  labs(title = \"Confronto tra un campione trattato e uno controllo\")\n\n(p1 + p2) / (p3 + p4)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_d_sec-preproc_EDA_raw.html#identificazione-di-potenziali-bias",
+    "href": "001_d_sec-preproc_EDA_raw.html#identificazione-di-potenziali-bias",
+    "title": "4  Esplorazione dei Dati",
+    "section": "\n4.4 Identificazione di potenziali bias",
+    "text": "4.4 Identificazione di potenziali bias\n\nMostra il codice Rpca_res &lt;- prcomp(readcounts, scale. = TRUE)\n\n\n# Create PCA plot of raw counts\ntibble(Sample = rownames(pca_res$rotation),\n       PC1 = pca_res$rotation[,1],\n       PC2 = pca_res$rotation[,2]) |&gt; \n  left_join(coldata |&gt; select(Sample = geo_accession, Group = infection)) |&gt; \n  ggplot(aes(x = PC1, y = PC2, color = Group)) +\n  geom_point(size = 3) +\n  ggtitle(\"PCA on Raw Counts\") +\n  theme_bw() +\n  scale_color_brewer(palette = \"Set1\")\n#&gt; Joining with `by = join_by(Sample)`",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_e_sec-preproc_trans.html",
+    "href": "001_e_sec-preproc_trans.html",
+    "title": "5  Trasformazione dei dati",
+    "section": "",
+    "text": "5.1 VST vs. rlog\nSia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. Questo è importante perché il modello statistico di DESeq2 assume che la varianza sia approssimativamente costante per tutti i geni.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trasformazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_e_sec-preproc_trans.html#vst-vs.-rlog",
+    "href": "001_e_sec-preproc_trans.html#vst-vs.-rlog",
+    "title": "5  Trasformazione dei dati",
+    "section": "",
+    "text": "5.1.1 Quando scegliere VST?\n\n\nAnalisi di Espressione Differenziale: La VST è generalmente preferita per l’analisi dell’espressione differenziale, poiché è stata specificamente progettata per questo scopo.\n\nVisualizzazione di Heatmap e PCA: La VST è adatta per visualizzare i dati in heatmap e PCA, in quanto preserva bene le distanze tra i campioni.\n\nDataset di Grandi Dimensioni: La VST è computazionalmente più efficiente della rlog, quindi è preferibile per dataset con molti geni o campioni.\n\n5.1.2 Quando scegliere rlog?\n\n\nEsplorazione dei Dati: La rlog può essere utile per esplorare i dati in modo più intuitivo, poiché produce valori che sono più simili ai log2 fold change.\n\nClustering: La rlog può essere preferita per il clustering dei geni, poiché tende a separare meglio i cluster.\n\nDataset di Piccole Dimensioni: La rlog può essere più accurata della VST per dataset con pochi geni o campioni.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trasformazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_e_sec-preproc_trans.html#grafico-mediadeviazione-standard",
+    "href": "001_e_sec-preproc_trans.html#grafico-mediadeviazione-standard",
+    "title": "5  Trasformazione dei dati",
+    "section": "\n5.2 Grafico Media/Deviazione standard",
+    "text": "5.2 Grafico Media/Deviazione standard\n\nMostra il codice RmeanSdPlot(assay(dds), ranks = FALSE)\n\n\n\n\n\n\n\nUn grafico Media/DS (Deviazione Standard) è uno strumento utile per valutare l’efficacia dei metodi di normalizzazione dell’abbondanza genica, specialmente nell’analisi dei dati RNA-Seq. Ecco come funziona:\n1. Le basi\n\n\nMedia: Il livello di espressione medio di un gene in tutti i campioni del tuo set di dati.\n\nDeviazione Standard (DS): Una misura di quanto varia l’espressione di un gene tra i tuoi campioni.\n\n2. Costruire il grafico\n\n\nAsse X: L’abbondanza media del gene (di solito su una scala logaritmica).\n\nAsse Y: La deviazione standard dell’abbondanza del gene (anche spesso trasformata logaritmicamente).\n\nOgni punto: Rappresenta un singolo gene nel tuo set di dati.\n\n3. Interpretazione\n\n\nScenario ideale: Dopo una normalizzazione efficace, idealmente dovresti vedere una linea orizzontale o una tendenza relativamente piatta nel grafico. Ciò indica che la deviazione standard (variabilità) dell’espressione genica è coerente tra i diversi livelli di espressione media.\n\nProblemi di normalizzazione: Se vedi una forte tendenza (ad esempio, una forma a imbuto in cui la DS aumenta con la media), suggerisce che il tuo metodo di normalizzazione non ha completamente tenuto conto di bias sistematici. Questi bias potrebbero essere dovuti a:\n\n\nDifferenze nella dimensione della libreria: I campioni con più letture tendono ad avere una varianza maggiore.\n\nBias della lunghezza del gene: I geni più lunghi tendono ad avere più letture e quindi una maggiore varianza.\n\nBias del contenuto di GC: I geni con diverso contenuto di GC possono essere influenzati in modo diverso durante la preparazione della libreria.\n\n\n\n4. Perché è importante\n\n\nAnalisi accurata dell’espressione differenziale: La normalizzazione mira a ridurre questi bias tecnici in modo da poter identificare con sicurezza le vere differenze biologiche nell’espressione genica tra i gruppi (ad esempio, trattato vs. controllo). Un grafico Media/DS ti aiuta a vedere se il metodo scelto raggiunge questo obiettivo.\n\nConfronto tra metodi di normalizzazione: Puoi utilizzare i grafici Media/DS per confrontare le prestazioni di diverse tecniche di normalizzazione sui tuoi dati e scegliere quella che stabilizza meglio la varianza.\n\nEsempio:\nImmagina un grafico Media/DS in cui la deviazione standard è molto più alta per i geni con espressione media elevata. Ciò suggerisce un bias correlato alla profondità di sequenziamento o alla lunghezza del gene. Un buon metodo di normalizzazione dovrebbe ridurre questa tendenza, portando a una distribuzione più uniforme delle deviazioni standard su tutti i livelli di espressione.\nIn sintesi: Il grafico Media/DS è uno strumento diagnostico visivo che ti aiuta a valutare la qualità della normalizzazione dell’abbondanza genica. È un passaggio chiave per garantire l’accuratezza e l’affidabilità delle analisi a valle come l’espressione genica differenziale.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trasformazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_e_sec-preproc_trans.html#trasformazione-vst",
+    "href": "001_e_sec-preproc_trans.html#trasformazione-vst",
+    "title": "5  Trasformazione dei dati",
+    "section": "\n5.3 Trasformazione VST",
+    "text": "5.3 Trasformazione VST\n\nMostra il codice Rvsd &lt;- DESeq2::vst(dds, blind = TRUE)\nmeanSdPlot(assay(vsd), ranks = FALSE)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Trasformazione dei dati</span>"
+    ]
+  },
+  {
+    "objectID": "002_a_sec-DEG-norm.html",
+    "href": "002_a_sec-DEG-norm.html",
+    "title": "7  Normalizzazione",
+    "section": "",
+    "text": "La normalizzazione è un processo fondamentale nell’analisi RNA-seq, in quanto consente di confrontare in modo accurato l’espressione genica tra campioni diversi. DESeq2 implementa un metodo di normalizzazione robusto ed efficace che tiene conto delle differenze nella dimensione della libreria e della composizione del trascrittoma.\nPerché è necessaria la normalizzazione?\nLe librerie di sequenziamento RNA possono variare in termini di dimensione, ovvero il numero totale di reads sequenziate. Queste differenze possono essere dovute a variazioni tecniche nel processo di preparazione delle librerie o a differenze biologiche nella quantità di RNA di partenza. Senza normalizzazione, le differenze nella dimensione della libreria potrebbero essere erroneamente interpretate come differenze nell’espressione genica.\nIl metodo di normalizzazione di DESeq2\nDESeq2 utilizza un metodo di normalizzazione basato sui fattori di dimensione (size factors). Questo metodo assume che la maggior parte dei geni non sia differenzialmente espressa tra le condizioni sperimentali.\nEcco come funziona:\n\nCalcolo della mediana del rapporto: Per ogni gene, viene calcolato il rapporto tra il suo conteggio in un campione e la mediana dei suoi conteggi in tutti i campioni.\nStima dei fattori di dimensione: Per ogni campione, il fattore di dimensione è la mediana dei rapporti calcolati al punto 1. Questo fattore rappresenta un fattore di scala che viene utilizzato per normalizzare i conteggi grezzi.\nNormalizzazione dei conteggi: I conteggi grezzi di ciascun gene vengono divisi per il fattore di dimensione del corrispondente campione.\n\nVantaggi del metodo di DESeq2:\n\n\nRobustezza: Il metodo è robusto agli outlier, ovvero a geni con conteggi estremi che potrebbero influenzare altri metodi di normalizzazione.\n\nEfficacia: Il metodo è efficace nel correggere le differenze nella dimensione della libreria e nella composizione del trascrittoma.\n\nSemplicità: Il metodo è relativamente semplice da comprendere e implementare.\n\n\nMostra il codice Rdds_esf &lt;- estimateSizeFactors(dds)\n\ncolData(dds)\n#&gt; DataFrame with 22 rows and 10 columns\n#&gt;                      title geo_accession     organism         age\n#&gt;                &lt;character&gt;   &lt;character&gt;  &lt;character&gt; &lt;character&gt;\n#&gt; GSM2545336 CNS_RNA-seq_10C    GSM2545336 Mus musculus     8 weeks\n#&gt; GSM2545337 CNS_RNA-seq_11C    GSM2545337 Mus musculus     8 weeks\n#&gt; GSM2545338 CNS_RNA-seq_12C    GSM2545338 Mus musculus     8 weeks\n#&gt; GSM2545339 CNS_RNA-seq_13C    GSM2545339 Mus musculus     8 weeks\n#&gt; GSM2545340 CNS_RNA-seq_14C    GSM2545340 Mus musculus     8 weeks\n#&gt; ...                    ...           ...          ...         ...\n#&gt; GSM2545353  CNS_RNA-seq_3C    GSM2545353 Mus musculus     8 weeks\n#&gt; GSM2545354  CNS_RNA-seq_4C    GSM2545354 Mus musculus     8 weeks\n#&gt; GSM2545362  CNS_RNA-seq_5C    GSM2545362 Mus musculus     8 weeks\n#&gt; GSM2545363  CNS_RNA-seq_6C    GSM2545363 Mus musculus     8 weeks\n#&gt; GSM2545380  CNS_RNA-seq_9C    GSM2545380 Mus musculus     8 weeks\n#&gt;                    sex   infection      strain        time      tissue\n#&gt;            &lt;character&gt;    &lt;factor&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;\n#&gt; GSM2545336      Female InfluenzaA      C57BL/6        Day8  Cerebellum\n#&gt; GSM2545337      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545338      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545339      Female InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545340        Male InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; ...                ...         ...         ...         ...         ...\n#&gt; GSM2545353      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545354        Male NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545362      Female InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545363        Male InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545380      Female InfluenzaA      C57BL/6        Day8  Cerebellum\n#&gt;                mouse\n#&gt;            &lt;integer&gt;\n#&gt; GSM2545336        14\n#&gt; GSM2545337         9\n#&gt; GSM2545338        10\n#&gt; GSM2545339        15\n#&gt; GSM2545340        18\n#&gt; ...              ...\n#&gt; GSM2545353         4\n#&gt; GSM2545354         2\n#&gt; GSM2545362        20\n#&gt; GSM2545363        12\n#&gt; GSM2545380        19\ncolData(dds_esf)\n#&gt; DataFrame with 22 rows and 11 columns\n#&gt;                      title geo_accession     organism         age\n#&gt;                &lt;character&gt;   &lt;character&gt;  &lt;character&gt; &lt;character&gt;\n#&gt; GSM2545336 CNS_RNA-seq_10C    GSM2545336 Mus musculus     8 weeks\n#&gt; GSM2545337 CNS_RNA-seq_11C    GSM2545337 Mus musculus     8 weeks\n#&gt; GSM2545338 CNS_RNA-seq_12C    GSM2545338 Mus musculus     8 weeks\n#&gt; GSM2545339 CNS_RNA-seq_13C    GSM2545339 Mus musculus     8 weeks\n#&gt; GSM2545340 CNS_RNA-seq_14C    GSM2545340 Mus musculus     8 weeks\n#&gt; ...                    ...           ...          ...         ...\n#&gt; GSM2545353  CNS_RNA-seq_3C    GSM2545353 Mus musculus     8 weeks\n#&gt; GSM2545354  CNS_RNA-seq_4C    GSM2545354 Mus musculus     8 weeks\n#&gt; GSM2545362  CNS_RNA-seq_5C    GSM2545362 Mus musculus     8 weeks\n#&gt; GSM2545363  CNS_RNA-seq_6C    GSM2545363 Mus musculus     8 weeks\n#&gt; GSM2545380  CNS_RNA-seq_9C    GSM2545380 Mus musculus     8 weeks\n#&gt;                    sex   infection      strain        time      tissue\n#&gt;            &lt;character&gt;    &lt;factor&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;\n#&gt; GSM2545336      Female InfluenzaA      C57BL/6        Day8  Cerebellum\n#&gt; GSM2545337      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545338      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545339      Female InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545340        Male InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; ...                ...         ...         ...         ...         ...\n#&gt; GSM2545353      Female NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545354        Male NonInfected     C57BL/6        Day0  Cerebellum\n#&gt; GSM2545362      Female InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545363        Male InfluenzaA      C57BL/6        Day4  Cerebellum\n#&gt; GSM2545380      Female InfluenzaA      C57BL/6        Day8  Cerebellum\n#&gt;                mouse sizeFactor\n#&gt;            &lt;integer&gt;  &lt;numeric&gt;\n#&gt; GSM2545336        14   1.134369\n#&gt; GSM2545337         9   0.909434\n#&gt; GSM2545338        10   0.856613\n#&gt; GSM2545339        15   0.914962\n#&gt; GSM2545340        18   0.929113\n#&gt; ...              ...        ...\n#&gt; GSM2545353         4    1.10654\n#&gt; GSM2545354         2    0.97923\n#&gt; GSM2545362        20    1.08336\n#&gt; GSM2545363        12    1.00029\n#&gt; GSM2545380        19    1.13368",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Normalizzazione</span>"
+    ]
+  },
+  {
+    "objectID": "001_f_sec-preproc_EDA_trans.html",
+    "href": "001_f_sec-preproc_EDA_trans.html",
+    "title": "6  Esplorazione dei Dati",
+    "section": "",
+    "text": "6.1 Heatmap\nUn heatmap è uno strumento potente per visualizzare dati di espressione genica, in quanto consente di osservare pattern di espressione di più geni in diversi campioni simultaneamente.\nCome funziona:\nClustering gerarchico:\nSpesso, i heatmap vengono combinati con il clustering gerarchico per raggruppare geni e campioni con pattern di espressione simili.\nMostra il codice Rdst &lt;- as.matrix(dist(t(assay(vst)))) |&gt; data.frame()\n\nacol &lt;- data.frame(\"Infection\"= vst$infection)\narow &lt;- data.frame(\"Sex\"= vst$infection)\nrownames(acol) &lt;- vst$geo_accession\nrownames(arow) &lt;- vst$geo_accession\n\npheatmap(dst, annotation_col = acol, cluster_row = TRUE, display_numbers = TRUE)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_f_sec-preproc_EDA_trans.html#heatmap",
+    "href": "001_f_sec-preproc_EDA_trans.html#heatmap",
+    "title": "6  Esplorazione dei Dati",
+    "section": "",
+    "text": "Matrice di dati: I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni. Ogni cella della matrice contiene un valore che indica il livello di espressione di un particolare gene in un particolare campione.\nMappa di colori: I valori di espressione sono mappati a una scala di colori, in genere con colori freddi (ad esempio, blu) che rappresentano bassi livelli di espressione e colori caldi (ad esempio, rosso) che rappresentano alti livelli di espressione.\nVisualizzazione: La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta un valore di espressione. I pattern di espressione possono essere facilmente identificati osservando le variazioni di colore nella griglia.\n\n\n\n\n\nClustering dei campioni: I campioni con pattern di espressione simili vengono raggruppati insieme in colonne.",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_f_sec-preproc_EDA_trans.html#pca",
+    "href": "001_f_sec-preproc_EDA_trans.html#pca",
+    "title": "6  Esplorazione dei Dati",
+    "section": "\n6.2 PCA",
+    "text": "6.2 PCA\n\nMostra il codice RpcaData &lt;- DESeq2::plotPCA(vst, intgroup = c(\"infection\"), ntop = 3000)\n#&gt; using ntop=3000 top features by variance\npcaData2 &lt;- pcaData$data\n\npp &lt;- ggplot(pcaData2, aes(x = PC1, y = PC2, text = name)) +\n  geom_point(aes(color = infection), size = 5) +\n  theme_minimal() \n\nplotly::ggplotly(pp)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "001_f_sec-preproc_EDA_trans.html#esplorazioni-interattiva-dei-dati",
+    "href": "001_f_sec-preproc_EDA_trans.html#esplorazioni-interattiva-dei-dati",
+    "title": "6  Esplorazione dei Dati",
+    "section": "\n6.3 Esplorazioni interattiva dei dati",
+    "text": "6.3 Esplorazioni interattiva dei dati\n\nMostra il codice R## Convert DESeqDataSet object to a SingleCellExperiment object, in order to\n## be able to store the PCA representation\n# library(SingleCellExperiment)\n# sce &lt;- as(dds, \"SingleCellExperiment\")\n\n# ## Add PCA to the 'reducedDim' slot\n# stopifnot(rownames(pcaData) == colnames(sce))\n# reducedDim(sce, \"PCA\") &lt;- as.matrix(pcaData[, c(\"PC1\", \"PC2\")])\n\n# ## Add variance-stabilized data as a new assay\n# stopifnot(colnames(vst) == colnames(sce))\n# assay(sce, \"vst\") &lt;- assay(vst)\n\n# app &lt;- iSEE::iSEE(sce)\n# shiny::runApp(app)",
+    "crumbs": [
+      "Preparazione ed esplorazione dei dati",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Esplorazione dei Dati</span>"
+    ]
+  },
+  {
+    "objectID": "002_sec-DEG.html",
+    "href": "002_sec-DEG.html",
+    "title": "Analisi differenziale",
+    "section": "",
+    "text": "Benvenuti alla seconda parte del corso, dove ci addentreremo nel cuore dell’analisi RNA-seq: l’analisi dell’espressione differenziale!\nDopo aver accuratamente preparato e esplorato i nostri dati, siamo pronti per applicare il potente framework statistico offerto da DESeq2 per identificare i geni che mostrano cambiamenti significativi di espressione tra le diverse condizioni sperimentali.\nIn questa parte del corso, ci concentreremo sui seguenti aspetti fondamentali:\n\nNormalizzazione: Vedremo come DESeq2 normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria e di altri fattori tecnici, garantendo un confronto accurato tra i campioni.\nModellazione Statistica: Vedremo il modello statistico alla base di DESeq2 che si basa sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.\nTesting: Impareremo come DESeq2 applica test statistici per identificare i geni differenzialmente espressi, tenendo conto del disegno sperimentale e controllando il tasso di falsi positivi.\n\nAttraverso questi passaggi, saremo in grado di ottenere una lista di geni differenzialmente espressi, completa di stime dell’effetto (log2 fold change) e significatività statistica (p-value aggiustati).\nNei capitoli successivi, approfondiremo l’esplorazione dei risultati per contrasti specifici, la visualizzazione dei dati e l’interpretazione biologica dei risultati.",
+    "crumbs": [
+      "Analisi differenziale"
+    ]
+  },
+  {
+    "objectID": "002_b_sec-DEG-stat.html",
+    "href": "002_b_sec-DEG-stat.html",
+    "title": "8  Modellazione statistica",
+    "section": "",
+    "text": "8.1 Dispersion plot\nAssi:\nPunti:\nInterpretazione:\nUtilità del grafico:",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Modellazione statistica</span>"
+    ]
+  },
+  {
+    "objectID": "002_b_sec-DEG-stat.html#dispersion-plot",
+    "href": "002_b_sec-DEG-stat.html#dispersion-plot",
+    "title": "8  Modellazione statistica",
+    "section": "",
+    "text": "Asse x: Rappresenta la media normalizzata dei conteggi per gene. In altre parole, indica quanto un gene è espresso in media, considerando tutti i campioni e dopo aver normalizzato i conteggi per le dimensioni della libreria.\n\nAsse y: Rappresenta la dispersione stimata per gene. La dispersione è una misura della variabilità dell’espressione di un gene tra i replicati.\n\n\n\n\nPunti neri: Ogni punto nero rappresenta un gene. La sua posizione sul grafico indica la sua media e la sua dispersione stimata.\n\nLinea rossa: Questa linea rappresenta la curva di tendenza della dispersione in funzione della media. DESeq2 modella la relazione tra media e dispersione per stimare la dispersione dei geni a bassa espressione, che tendono ad avere stime meno affidabili.\n\n\n\n\nGeni con alta dispersione: Geni che si trovano al di sopra della curva di tendenza rossa hanno una dispersione maggiore di quanto previsto dal modello. Questo potrebbe indicare che l’espressione di questi geni è influenzata da fattori biologici o tecnici non considerati nel modello.\n\nGeni con bassa dispersione: Geni che si trovano al di sotto della curva di tendenza rossa hanno una dispersione minore del previsto.\n\n\n\n\nValutare la qualità dei dati: Il grafico permette di valutare la qualità dei dati e di identificare eventuali problemi di variabilità.\n\nVerificare l’efficacia del modello: Il grafico mostra come il modello di DESeq2 stima la dispersione.\n\nIdentificare geni di interesse: Geni con alta dispersione potrebbero essere di particolare interesse per l’analisi, in quanto la loro espressione potrebbe essere influenzata da fattori biologici rilevanti.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Modellazione statistica</span>"
+    ]
+  },
+  {
+    "objectID": "002_c_sec-DEG-test.html",
+    "href": "002_c_sec-DEG-test.html",
+    "title": "9  Testing",
+    "section": "",
+    "text": "Dopo aver normalizzato i dati e stimato i parametri del modello, DESeq2 applica test statistici per identificare i geni differenzialmente espressi tra le condizioni sperimentali.\nTest di Wald\nIl test statistico principale utilizzato da DESeq2 è il test di Wald. Questo test verifica l’ipotesi nulla che il log2 fold change di un gene tra due condizioni sia uguale a zero. In altre parole, il test verifica se c’è una differenza significativa nell’espressione del gene tra le condizioni.\nCome funziona il test di Wald:\n\n\nStima del log2 fold change: DESeq2 stima il log2 fold change per ogni gene, che rappresenta la differenza di espressione tra le condizioni.\n\nCalcolo della statistica del test: DESeq2 calcola la statistica del test di Wald, che è il rapporto tra la stima del log2 fold change e il suo errore standard.\n\nCalcolo del p-value: DESeq2 calcola il p-value, che rappresenta la probabilità di osservare un log2 fold change così estremo (o più estremo) se l’ipotesi nulla fosse vera.\n\nCorrezione per test multipli\nPoiché vengono testati migliaia di geni contemporaneamente, è necessario correggere i p-value per il problema dei test multipli. DESeq2 utilizza come default il metodo di Benjamini-Hochberg per controllare il False Discovery Rate (FDR).\nInterpretazione dei risultati\nI geni con un p-value aggiustato (padj) inferiore a una soglia di significatività (ad esempio, 0.05) sono considerati differenzialmente espressi. Il log2 fold change indica la direzione e l’entità della differenza di espressione.\n\nMostra il codice Rddsf &lt;- nbinomWaldTest(dds_stat)",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Testing</span>"
+    ]
+  },
+  {
+    "objectID": "002_d_sec-DEG-allinone.html",
+    "href": "002_d_sec-DEG-allinone.html",
+    "title": "10  All in one",
+    "section": "",
+    "text": "In DESeq2, la funzione DESeq() offre un modo conveniente per eseguire l’intera analisi dell’espressione differenziale in un unico passaggio. Questa funzione integra i tre passaggi chiave appena visti:\n\n\nestimateSizeFactors(): Normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria.\n\nestimateDispersions(): Stima la dispersione dei geni, ovvero la variabilità dell’espressione tra i replicati.\n\nnbinomWaldTest(): Esegue il test di Wald per identificare i geni differenzialmente espressi.\n\nUtilizzo di dati non trasformati e non normalizzati\nÈ fondamentale sottolineare che la funzione DESeq() deve essere applicata ai dati di conteggio grezzi, non trasformati e non normalizzati. Questo perché DESeq2 esegue internamente la normalizzazione e la trasformazione dei dati in modo appropriato per il modello statistico.\nVantaggi:\n\nSemplicità: Esegue l’intera analisi in un unico passaggio.\nAccuratezza: Applica i metodi di normalizzazione e trasformazione appropriati.\nFlessibilità: Offre diverse opzioni per personalizzare l’analisi.\n\n\nMostra il codice Rddsf &lt;- DESeq(dds)\n#&gt; estimating size factors\n#&gt; estimating dispersions\n#&gt; gene-wise dispersion estimates\n#&gt; mean-dispersion relationship\n#&gt; final dispersion estimates\n#&gt; fitting model and testing\n#&gt; -- replacing outliers and refitting for 21 genes\n#&gt; -- DESeq argument 'minReplicatesForReplace' = 7 \n#&gt; -- original counts are preserved in counts(dds)\n#&gt; estimating dispersions\n#&gt; fitting model and testing\nres &lt;- results(ddsf, contrast = c(params$mycondition, params$mynum, params$mydenom), alpha = params$mypval, pAdjustMethod = params$mypadj)\n\n\nLa funzione results() in DESeq2 è fondamentale per estrarre ed esplorare i risultati dell’analisi dell’espressione differenziale.\nresults() estrae i risultati del test di Wald per l’espressione differenziale da un oggetto DESeqDataSet dopo aver eseguito DESeq(). Restituisce un oggetto DataFrame contenente informazioni sui geni, come log2 fold change, p-value e statistiche del test.\n\nMostra il codice Rout_res &lt;- tibble(\n  gene = res@rownames,\n  baseMean = res@listData$baseMean,\n  log2FoldChange = res@listData$log2FoldChange,\n  lfcSE = res@listData$lfcSE,\n  # stat = res@listData$stat,\n  pvalue = res@listData$pvalue,\n  padj = res@listData$padj\n) |&gt;\n  mutate(across(where(is.double), ~ round(., digits = 2)))\n\ndatatable(out_res,\n  options = list(\n    pageLength = 20,\n    autoWidth = TRUE,\n    dom = \"Bfrtip\",\n    filter = \"top\"\n  ), rownames = TRUE\n)\n#&gt; Warning in instance$preRenderHook(instance): It seems your data is too big\n#&gt; for client-side DataTables. You may consider server-side processing:\n#&gt; https://rstudio.github.io/DT/server.html\n\n\n\n\n\n\nMostra il codice Rsummary(res)\n#&gt; \n#&gt; out of 27430 with nonzero total read count\n#&gt; adjusted p-value &lt; 0.01\n#&gt; LFC &gt; 0 (up)       : 595, 2.2%\n#&gt; LFC &lt; 0 (down)     : 592, 2.2%\n#&gt; outliers [1]       : 0, 0%\n#&gt; low counts [2]     : 10104, 37%\n#&gt; (mean count &lt; 11)\n#&gt; [1] see 'cooksCutoff' argument of ?results\n#&gt; [2] see 'independentFiltering' argument of ?results",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>All in one</span>"
+    ]
+  },
+  {
+    "objectID": "002_e_sec-DEG-shrinkage.html",
+    "href": "002_e_sec-DEG-shrinkage.html",
+    "title": "11  Shrinkage in DESeq2",
+    "section": "",
+    "text": "11.1 Visualizzazione dei dati con plotMA()\nPrima di applicare lo shrinkage, visualizziamo i risultati grezzi del test di Wald usando la funzione plotMA().\nMostra il codice R# Crea un MA-plot\nplotMA(res)\nQuesto grafico mostra la relazione tra l’intensità media e il log2 fold change per ogni gene. I geni significativamente differenzialmente espressi sono colorati in blu.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Shrinkage in DESeq2</span>"
+    ]
+  },
+  {
+    "objectID": "002_e_sec-DEG-shrinkage.html#perché-lo-shrinkage-è-importante",
+    "href": "002_e_sec-DEG-shrinkage.html#perché-lo-shrinkage-è-importante",
+    "title": "11  Shrinkage in DESeq2",
+    "section": "\n11.2 Perché lo shrinkage è importante?",
+    "text": "11.2 Perché lo shrinkage è importante?\n\n\nRiduzione del rumore: Lo shrinkage riduce l’impatto del rumore nelle stime dei log2 fold change, soprattutto per i geni con bassa espressione o alta varianza.\n\nMigliore interpretabilità: Senza shrinkage, i geni con bassa espressione possono mostrare log2 fold change molto grandi ma poco affidabili. Lo shrinkage modera questi effetti, rendendo i risultati più interpretabili.\n\nMaggiore accuratezza: Lo shrinkage migliora l’accuratezza delle stime dei log2 fold change, riducendo il rischio di falsi positivi e falsi negativi.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Shrinkage in DESeq2</span>"
+    ]
+  },
+  {
+    "objectID": "002_e_sec-DEG-shrinkage.html#come-funziona-lo-shrinkage-in-deseq2",
+    "href": "002_e_sec-DEG-shrinkage.html#come-funziona-lo-shrinkage-in-deseq2",
+    "title": "11  Shrinkage in DESeq2",
+    "section": "\n11.3 Come funziona lo shrinkage in DESeq2?",
+    "text": "11.3 Come funziona lo shrinkage in DESeq2?\nDESeq2 utilizza un metodo di shrinkage bayesiano che “restringe” le stime dei log2 fold change verso valori più probabili, basandosi sulla distribuzione a priori dei log2 fold change e sulla dispersione stimata per ciascun gene. I geni con bassa espressione o alta varianza vengono “shrunk” maggiormente verso zero, mentre i geni con alta espressione e bassa varianza vengono “shrunk” meno.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Shrinkage in DESeq2</span>"
+    ]
+  },
+  {
+    "objectID": "002_e_sec-DEG-shrinkage.html#applicazione-dello-shrinkage",
+    "href": "002_e_sec-DEG-shrinkage.html#applicazione-dello-shrinkage",
+    "title": "11  Shrinkage in DESeq2",
+    "section": "\n11.4 Applicazione dello shrinkage",
+    "text": "11.4 Applicazione dello shrinkage\n\nMostra il codice R# Applica lo shrinkage con la funzione lfcShrink()\nresultsNames(dds)\n#&gt; [1] \"Intercept\"                          \n#&gt; [2] \"infection_NonInfected_vs_InfluenzaA\"\nresShrink &lt;- lfcShrink(dds, coef = \"infection_NonInfected_vs_InfluenzaA\", type = \"apeglm\")\n#&gt; using 'apeglm' for LFC shrinkage. If used in published research, please cite:\n#&gt;     Zhu, A., Ibrahim, J.G., Love, M.I. (2018) Heavy-tailed prior distributions for\n#&gt;     sequence count data: removing the noise and preserving large differences.\n#&gt;     Bioinformatics. https://doi.org/10.1093/bioinformatics/bty895\n\n\nIn questo esempio, applichiamo lo shrinkage al coefficiente che rappresenta il confronto tra la condizione “trattato” e la condizione “controllo”. Il metodo “apeglm” è un metodo di shrinkage accurato e veloce.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Shrinkage in DESeq2</span>"
+    ]
+  },
+  {
+    "objectID": "002_e_sec-DEG-shrinkage.html#visualizzazione-dei-dati-dopo-lo-shrinkage",
+    "href": "002_e_sec-DEG-shrinkage.html#visualizzazione-dei-dati-dopo-lo-shrinkage",
+    "title": "11  Shrinkage in DESeq2",
+    "section": "\n11.5 Visualizzazione dei dati dopo lo shrinkage",
+    "text": "11.5 Visualizzazione dei dati dopo lo shrinkage\n\nMostra il codice R# Crea un MA-plot dopo lo shrinkage\nplotMA(resShrink)\n\n\n\n\n\n\n\nConfrontando questo grafico con il precedente, si può osservare come lo shrinkage abbia moderato i log2 fold change, soprattutto per i geni con bassa espressione.",
+    "crumbs": [
+      "Analisi differenziale",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Shrinkage in DESeq2</span>"
+    ]
+  },
+  {
+    "objectID": "003_a_sec-vis-volcano.html",
+    "href": "003_a_sec-vis-volcano.html",
+    "title": "12  Volcano plot",
+    "section": "",
+    "text": "Il volcano plot è una rappresentazione grafica molto utile nell’analisi dell’espressione differenziale, in quanto permette di visualizzare in modo immediato i geni più significativi e con i maggiori cambiamenti di espressione.\nCome funziona:\n\n\nAsse x: Log2 fold change. Rappresenta la differenza di espressione tra due condizioni, espressa in scala logaritmica in base 2. Un valore positivo indica che il gene è sovraespresso nella condizione in esame rispetto alla condizione di riferimento, mentre un valore negativo indica che il gene è sottoespresso.\n\nAsse y: -log10(p-value aggiustato). Rappresenta il valore negativo del logaritmo in base 10 del p-value aggiustato per test multipli. Un valore più alto sull’asse y indica una maggiore significatività statistica.\n\nPunti: Ogni punto rappresenta un gene. La sua posizione sul grafico indica il suo log2 fold change e la sua significatività statistica.\n\nInterpretazione:\n\n\nGeni in alto a destra e in alto a sinistra: Questi geni sono i più interessanti, in quanto mostrano sia un log2 fold change elevato (in valore assoluto) che una significatività statistica elevata. Sono i geni più fortemente sovraespressi o sottoespressi.\n\nGeni vicini all’asse y: Questi geni hanno un log2 fold change vicino a zero, quindi non mostrano una grande differenza di espressione tra le condizioni.\n\nGeni vicini all’asse x: Questi geni hanno un p-value aggiustato elevato, quindi non sono considerati significativamente differenzialmente espressi.\n\nVantaggi:\n\n\nVisione d’insieme: Il volcano plot fornisce una visione d’insieme dei risultati dell’analisi differenziale, permettendo di identificare rapidamente i geni più interessanti.\n\nIdentificazione dei geni significativi: I geni significativamente differenzialmente espressi sono chiaramente evidenziati nel grafico.\n\nValutazione del fold change: Il grafico permette di valutare l’entità del cambiamento di espressione per ciascun gene.\n\nEsempio in R:\n\nMostra il codice R# Crea un volcano plot con ggplot2\nFC &lt;- .5\npv &lt;- 0.0001\n\nout_res &lt;- tibble(\n  gene = res@rownames,\n  baseMean = res@listData$baseMean,\n  log2FoldChange = res@listData$log2FoldChange,\n  lfcSE = res@listData$lfcSE,\n  # stat = res@listData$stat,\n  pvalue = res@listData$pvalue,\n  padj = res@listData$padj\n) |&gt;\n  mutate(colore = case_when(\n    log2FoldChange &gt; FC & padj &lt; pv ~ \"#F5A15B\",\n    log2FoldChange &lt; -FC & padj &lt; pv ~ \"#106973\",\n    TRUE ~ \"#D2D4D4\"\n  ))\n\n\nggplot(out_res, aes(x = log2FoldChange, y = -log10(padj), color = colore)) +\n  geom_point() +\n  geom_hline(yintercept = -log10(pv), linetype = \"dashed\", color = \"red\") +\n  geom_vline(xintercept = c(-FC, FC), linetype = \"dashed\", color = \"blue\") +\n  labs(x = \"log2 Fold Change\", y = \"-log10(Adjusted p-value)\") +\n  ggtitle(\"Volcano Plot\") +\n  scale_color_identity(labels = c(\"Red\", \"Blue\", \"Green\")) +\n  theme_bw()\n#&gt; Warning: Removed 10104 rows containing missing values or values outside the scale\n#&gt; range (`geom_point()`).\n\n\n\n\n\n\n\nIn questo esempio:\n\n\ngeom_hline() aggiunge una linea orizzontale tratteggiata in corrispondenza del livello di significatività scelto.\n\ngeom_vline() aggiunge due linee verticali tratteggiate in corrispondenza del log2 fold change.\n\n\nMostra il codice Rpp &lt;- ggplot(out_res, aes(x = log2FoldChange, y = -log10(padj), text = paste0(\"Gene: \", gene))) +\n  geom_point(aes(color = colore)) +\n  geom_hline(yintercept = -log10(pv), linetype = \"dashed\", color = \"red\") +\n  geom_vline(xintercept = c(-FC, FC), linetype = \"dashed\", color = \"blue\") +\n  labs(x = \"log2 Fold Change\", y = \"-log10(Adjusted p-value)\") +\n  ggtitle(\"Volcano Plot\") +\n  scale_color_identity(guide = \"none\") +\n  theme_bw() +\n  theme(legend.position = \"none\")\nplotly::ggplotly(pp)",
+    "crumbs": [
+      "Visualizzazione grafica",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Volcano plot</span>"
+    ]
+  },
+  {
+    "objectID": "003_sec-Visualization.html",
+    "href": "003_sec-Visualization.html",
+    "title": "Visualizzazione grafica",
+    "section": "",
+    "text": "In questa terza parte del corso, ci concentreremo sulla visualizzazione dei risultati dell’analisi dell’espressione differenziale, con particolare attenzione ai geni che abbiamo identificato come differenzialmente espressi.\nEsploreremo diverse tecniche di visualizzazione, tra cui:\n\n\nVolcano plot: Per identificare i geni più significativi e con i maggiori fold change.\n\nHeatmap: Per visualizzare i pattern di espressione di gruppi di geni in diversi campioni.\n\nAttraverso queste visualizzazioni, saremo in grado di:\n\n\nComunicare i risultati in modo efficace: Le figure chiare e informative sono essenziali per comunicare i risultati dell’analisi a un pubblico scientifico o non specialistico.\n\nIdentificare pattern e tendenze: La visualizzazione grafica può aiutare a identificare pattern e tendenze nei dati che potrebbero non essere evidenti dalle tabelle di numeri.\n\nGenerare nuove ipotesi: La visualizzazione dei risultati può portare a nuove ipotesi e spunti per ulteriori analisi.\n\nImpareremo a creare queste visualizzazioni in R, utilizzando sia le funzioni di base che pacchetti specifici come ggplot2. Sarete in grado di personalizzare le vostre figure per adattarle alle vostre esigenze e al vostro pubblico.\nPreparatevi a dare vita ai vostri dati con la potenza della visualizzazione!",
+    "crumbs": [
+      "Visualizzazione grafica"
+    ]
+  },
+  {
+    "objectID": "003_b_sec-vis-heatmap.html",
+    "href": "003_b_sec-vis-heatmap.html",
+    "title": "13  Heatmap plot",
+    "section": "",
+    "text": "L’heatmap è una rappresentazione grafica a matrice che utilizza colori per visualizzare i valori di un set di dati. Nell’analisi dell’espressione genica, l’heatmap è uno strumento potente per visualizzare i pattern di espressione di più geni in diversi campioni simultaneamente.\nCome funziona:\n\n\nOrganizzazione dei dati: I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni.\n\nMappa di colori: I valori di espressione sono mappati a una scala di colori graduata. In genere, colori freddi (ad esempio, il blu) rappresentano bassi livelli di espressione, mentre colori caldi (ad esempio, il rosso) rappresentano alti livelli di espressione.\n\nVisualizzazione: La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta il livello di espressione di un gene in un campione specifico.\n\nClustering gerarchico:\nSpesso, gli heatmap vengono combinati con il clustering gerarchico, un metodo statistico che raggruppa geni e/o campioni con pattern di espressione simili.\n\n\nClustering dei geni: Geni con profili di espressione simili sono raggruppati insieme, visualizzati come righe adiacenti nell’heatmap.\n\nClustering dei campioni: Campioni con profili di espressione simili sono raggruppati insieme, visualizzati come colonne adiacenti nell’heatmap.\n\nVantaggi:\n\n\nVisione d’insieme: Gli heatmap forniscono una panoramica completa dei pattern di espressione di un gran numero di geni in diversi campioni.\n\nIdentificazione di pattern: Permettono di identificare facilmente:\n\nGeni co-espressi, ovvero geni con livelli di espressione simili in diversi campioni.\nGruppi di campioni con profili di espressione simili.\nOutlier, ovvero geni o campioni con pattern di espressione insoliti.\n\n\n\nEsplorazione di dataset complessi: Sono uno strumento efficace per esplorare set di dati di grandi dimensioni e complessi.\n\n\nMostra il codice Rhm &lt;- function(res, pd = 0.001, lFC = 1, gene = FALSE) {\n  resSubset &lt;- subset(res, padj &lt; pd & abs(log2FoldChange) &gt; lFC)\n  resSubset &lt;- resSubset[order(resSubset$log2FoldChange, decreasing = TRUE), ]\n  genesSelected &lt;- rownames(resSubset)\n  heatData &lt;- assay(dds)[genesSelected, ]\n  my_sample_col &lt;- as.data.frame(cbind(rownames(colData(dds)), colData(dds)[\"infection\"]))\n  colnames(my_sample_col) &lt;- c(\"name\", \"sampletype\")\n  rownames(my_sample_col) &lt;- my_sample_col$name\n  my_sample_col$name &lt;- NULL\n  pheatmap(heatData, annotation_col = my_sample_col, cellwidth = 10, scale = \"row\", cluster_rows = TRUE, cluster_cols = TRUE, show_rownames = gene, main = paste0(\"DE genes, centered (FC=\", lFC, \", pajd=\", pd, \")\"), cutree_rows = 2, cutree_cols = 2)\n}\n\nhm(res, 0.01, 1)\n\n\n\n\n\n\n\n\nMostra il codice Rhm(res, 0.001, 1)\n\n\n\n\n\n\n\n\nMostra il codice Rhm(res, 0.01, 2, TRUE)\n\n\n\n\n\n\n\n\nMostra il codice Rhm(res, 0.001, 2, TRUE)\n\n\n\n\n\n\n\nInterpretazione:\n\n\nIntensità del colore: Indica il livello di espressione del gene nel campione.\n\nDendrogramma: Mostra le relazioni gerarchiche tra geni (righe) e campioni (colonne).\n\nPattern: Cerca blocchi di colore, che indicano gruppi di geni co-espressi o gruppi di campioni con profili simili.",
+    "crumbs": [
+      "Visualizzazione grafica",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Heatmap plot</span>"
+    ]
+  }
+]

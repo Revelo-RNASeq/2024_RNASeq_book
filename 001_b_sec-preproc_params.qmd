@@ -1,0 +1,51 @@
+---
+params:
+  mycondition: infection
+  mynum: InfluenzaA
+  mydenom: NonInfected
+  mypval: 0.01
+  myfc: 0.8
+  mypadj: fdr
+---
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+# Disegno Sperimentale {#sec-preproc-params}
+
+## Confronto
+
+- Tutti i rapporti devono essere considerati come **`r params$mynum`** rispetto a **`r params$mydenom`**    
+- Un rapporto di fold change \> 1 (o logFCRatio positivo) indica sovraespressione nella condizione **`r params$mynum`**    
+- Un rapporto di fold change \< 1 (o logFCRatio negativo) indica sovraespressione nella condizione **`r params$mydenom`**    
+
+## Cutoff di Fold Change e p-Value utilizzati
+
+-   Cutoff di Log Fold Change = **`r params$myfc`**\
+-   Cutoff di P-Value = **`r params$mypval`**\
+-   I p-value aggiustati sono determinati con il metodo **`r params$mypadj`**\
+
+I dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\
+
+Per questo report, **tutti e solo** i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale **viene scartato** e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni **non presenti** nel confronto possano avere sulla trasformazione e normalizzazione dei campioni **presenti** nel confronto.\
+
+I campioni presi in considerazione in questa analisi appartengono ai gruppi: **`r params$mynum` e `r params$mydenom`**.\
+Questo è il layout del samplesheet, ovvero l'associazione tra i singoli campioni e i gruppi di campioni:
+
+```{r reading_data}
+#| echo: false 
+# reading and preparing the data
+readcounts <- read.csv("data/GSE96870_counts_cerebellum.csv", 
+                   row.names = 1)
+
+datanames <- colnames(readcounts)
+coldata_all <- read.csv("data/GSE96870_coldata_all.csv",
+                    row.names = 1)
+coldata <- coldata_all[datanames,]
+
+saveRDS(readcounts, "data/readcounts.rds")
+saveRDS(coldata, "data/coldata.rds")
+```
