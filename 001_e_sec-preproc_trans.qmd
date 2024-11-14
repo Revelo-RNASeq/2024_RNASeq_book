@@ -40,7 +40,7 @@ dds <- readRDS("data/dds_fitered.rds")
 meanSdPlot(assay(dds), ranks = FALSE)
 ```
 
-::: {.content-hidden unless-meta="features.advanced_analysis"}
+::: {.content-hidden when-meta="features.advanced_analysis"}
 Un grafico Media/DS (Deviazione Standard) è uno strumento utile per valutare l'efficacia dei metodi di normalizzazione dell'abbondanza genica, specialmente nell'analisi dei dati RNA-Seq. Ecco come funziona:
 
 **1. Le basi**
@@ -78,7 +78,7 @@ Immagina un grafico Media/DS in cui la deviazione standard è molto più alta pe
 
 Per stabilizzare la varianza e rendere i dati più adatti alle assunzioni del modello statistico, possiamo applicare trasformazioni come la Variance Stabilizing Transformation (VST) o la Regularized Log Transformation (rlog). La scelta della trasformazione dipenderà dalle caratteristiche dei dati e dagli obiettivi dell’analisi.
 
-::: {.content-hidden unless-meta="features.advanced_analysis"}
+::: {.content-hidden when-meta="features.advanced_analysis"}
 ## VST vs. rlog
 
 Sia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. Questo è importante perché il modello statistico di DESeq2 assume che la varianza sia approssimativamente costante per tutti i geni.

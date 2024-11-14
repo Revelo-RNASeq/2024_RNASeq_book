@@ -261,8 +261,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#fc1-padj0.01" id="toc-fc1-padj0.01" class="nav-link active" data-scroll-target="#fc1-padj0.01"><span class="header-section-number">13.1</span> FC=1 &amp; padj=0.01</a></li>
+  <li><a href="#fc1-padj0.001" id="toc-fc1-padj0.001" class="nav-link" data-scroll-target="#fc1-padj0.001"><span class="header-section-number">13.2</span> FC=1 &amp; padj=0.001</a></li>
+  <li><a href="#fc2-padj0.01" id="toc-fc2-padj0.01" class="nav-link" data-scroll-target="#fc2-padj0.01"><span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01</a></li>
+  <li><a href="#fc2-padj0.001" id="toc-fc2-padj0.001" class="nav-link" data-scroll-target="#fc2-padj0.001"><span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./003_sec-Visualization.html">Visualizzazione grafica</a></li><li class="breadcrumb-item"><a href="./003_b_sec-vis-heatmap.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Heatmap plot</span></a></li></ol></nav><div class="quarto-title">
@@ -281,38 +288,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>L’heatmap è una rappresentazione grafica a matrice che utilizza colori per visualizzare i valori di un set di dati. Nell’analisi dell’espressione genica, l’heatmap è uno strumento potente per visualizzare i pattern di espressione di più geni in diversi campioni simultaneamente.</p>
-<p><strong>Come funziona:</strong></p>
-<ul>
-<li>
-<strong>Organizzazione dei dati:</strong> I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni.</li>
-<li>
-<strong>Mappa di colori:</strong> I valori di espressione sono mappati a una scala di colori graduata. In genere, colori freddi (ad esempio, il blu) rappresentano bassi livelli di espressione, mentre colori caldi (ad esempio, il rosso) rappresentano alti livelli di espressione.</li>
-<li>
-<strong>Visualizzazione:</strong> La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta il livello di espressione di un gene in un campione specifico.</li>
-</ul>
-<p><strong>Clustering gerarchico:</strong></p>
-<p>Spesso, gli heatmap vengono combinati con il clustering gerarchico, un metodo statistico che raggruppa geni e/o campioni con pattern di espressione simili.</p>
-<ul>
-<li>
-<strong>Clustering dei geni:</strong> Geni con profili di espressione simili sono raggruppati insieme, visualizzati come righe adiacenti nell’heatmap.</li>
-<li>
-<strong>Clustering dei campioni:</strong> Campioni con profili di espressione simili sono raggruppati insieme, visualizzati come colonne adiacenti nell’heatmap.</li>
-</ul>
-<p><strong>Vantaggi:</strong></p>
-<ul>
-<li>
-<strong>Visione d’insieme:</strong> Gli heatmap forniscono una panoramica completa dei pattern di espressione di un gran numero di geni in diversi campioni.</li>
-<li>
-<strong>Identificazione di pattern:</strong> Permettono di identificare facilmente:
-<ul>
-<li>Geni co-espressi, ovvero geni con livelli di espressione simili in diversi campioni.</li>
-<li>Gruppi di campioni con profili di espressione simili.</li>
-<li>Outlier, ovvero geni o campioni con pattern di espressione insoliti.</li>
-</ul>
-</li>
-<li>
-<strong>Esplorazione di dataset complessi:</strong> Sono uno strumento efficace per esplorare set di dati di grandi dimensioni e complessi.</li>
-</ul>
+<section id="fc1-padj0.01" class="level2" data-number="13.1"><h2 data-number="13.1" class="anchored" data-anchor-id="fc1-padj0.01">
+<span class="header-section-number">13.1</span> FC=1 &amp; padj=0.01</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">res</span>, <span class="va">pd</span> <span class="op">=</span> <span class="fl">0.001</span>, <span class="va">lFC</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">gene</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">resSubset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">padj</span> <span class="op">&lt;</span> <span class="va">pd</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">log2FoldChange</span><span class="op">)</span> <span class="op">&gt;</span> <span class="va">lFC</span><span class="op">)</span></span>
@@ -334,6 +311,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section><section id="fc1-padj0.001" class="level2" data-number="13.2"><h2 data-number="13.2" class="anchored" data-anchor-id="fc1-padj0.001">
+<span class="header-section-number">13.2</span> FC=1 &amp; padj=0.001</h2>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hm</span><span class="op">(</span><span class="va">res</span>, <span class="fl">0.001</span>, <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -343,6 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section><section id="fc2-padj0.01" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="fc2-padj0.01">
+<span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01</h2>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hm</span><span class="op">(</span><span class="va">res</span>, <span class="fl">0.01</span>, <span class="fl">2</span>, <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -352,6 +333,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section><section id="fc2-padj0.001" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="fc2-padj0.001">
+<span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001</h2>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hm</span><span class="op">(</span><span class="va">res</span>, <span class="fl">0.001</span>, <span class="fl">2</span>, <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -374,8 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- -->
 
-
-</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -889,71 +871,76 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>L'heatmap è una rappresentazione grafica a matrice che utilizza colori per visualizzare i valori di un set di dati. Nell'analisi dell'espressione genica, l'heatmap è uno strumento potente per visualizzare i pattern di espressione di più geni in diversi campioni simultaneamente.</span>
 <span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>**Come funziona:**</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Organizzazione dei dati:** I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni. </span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Mappa di colori:** I valori di espressione sono mappati a una scala di colori graduata. In genere, colori freddi (ad esempio, il blu) rappresentano bassi livelli di espressione, mentre colori caldi (ad esempio, il rosso) rappresentano alti livelli di espressione.</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Visualizzazione:** La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta il livello di espressione di un gene in un campione specifico. </span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>**Clustering gerarchico:**</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>Spesso, gli heatmap vengono combinati con il clustering gerarchico, un metodo statistico che raggruppa geni e/o campioni con pattern di espressione simili.</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Clustering dei geni:** Geni con profili di espressione simili sono raggruppati insieme, visualizzati come righe adiacenti nell'heatmap.</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Clustering dei campioni:** Campioni con profili di espressione simili sono raggruppati insieme, visualizzati come colonne adiacenti nell'heatmap.</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>**Vantaggi:**</span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Visione d'insieme:** Gli heatmap forniscono una panoramica completa dei pattern di espressione di un gran numero di geni in diversi campioni.</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Identificazione di pattern:** Permettono di identificare facilmente:</span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>Geni co-espressi, ovvero geni con livelli di espressione simili in diversi campioni.</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>Gruppi di campioni con profili di espressione simili.</span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="ss">    * </span>Outlier, ovvero geni o campioni con pattern di espressione insoliti.</span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Esplorazione di dataset complessi:** Sono uno strumento efficace per esplorare set di dati di grandi dimensioni e complessi.</span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>**Come funziona:**</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Organizzazione dei dati:** I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni.</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Mappa di colori:** I valori di espressione sono mappati a una scala di colori graduata. In genere, colori freddi (ad esempio, il blu) rappresentano bassi livelli di espressione, mentre colori caldi (ad esempio, il rosso) rappresentano alti livelli di espressione.</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Visualizzazione:** La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta il livello di espressione di un gene in un campione specifico.</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>**Clustering gerarchico:**</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>Spesso, gli heatmap vengono combinati con il clustering gerarchico, un metodo statistico che raggruppa geni e/o campioni con pattern di espressione simili.</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Clustering dei geni:** Geni con profili di espressione simili sono raggruppati insieme, visualizzati come righe adiacenti nell'heatmap.</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Clustering dei campioni:** Campioni con profili di espressione simili sono raggruppati insieme, visualizzati come colonne adiacenti nell'heatmap.</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>**Vantaggi:**</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Visione d'insieme:** Gli heatmap forniscono una panoramica completa dei pattern di espressione di un gran numero di geni in diversi campioni.</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Identificazione di pattern:** Permettono di identificare facilmente:</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Geni co-espressi, ovvero geni con livelli di espressione simili in diversi campioni.</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Gruppi di campioni con profili di espressione simili.</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Outlier, ovvero geni o campioni con pattern di espressione insoliti.</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Esplorazione di dataset complessi:** Sono uno strumento efficace per esplorare set di dati di grandi dimensioni e complessi.</span>
 <span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 16</span></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> <span class="cf">function</span>(res, <span class="at">pd =</span> <span class="fl">0.001</span>, <span class="at">lFC =</span> <span class="dv">1</span>, <span class="at">gene =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  resSubset <span class="ot">&lt;-</span> <span class="fu">subset</span>(res, padj <span class="sc">&lt;</span> pd <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;</span> lFC)</span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  resSubset <span class="ot">&lt;-</span> resSubset[<span class="fu">order</span>(resSubset<span class="sc">$</span>log2FoldChange, <span class="at">decreasing =</span> <span class="cn">TRUE</span>), ]</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  genesSelected <span class="ot">&lt;-</span> <span class="fu">rownames</span>(resSubset)</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  heatData <span class="ot">&lt;-</span> <span class="fu">assay</span>(dds)[genesSelected, ]</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  my_sample_col <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(<span class="fu">rownames</span>(<span class="fu">colData</span>(dds)), <span class="fu">colData</span>(dds)[<span class="st">"infection"</span>]))</span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(my_sample_col) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"name"</span>, <span class="st">"sampletype"</span>)</span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(my_sample_col) <span class="ot">&lt;-</span> my_sample_col<span class="sc">$</span>name</span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>  my_sample_col<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pheatmap</span>(heatData, <span class="at">annotation_col =</span> my_sample_col, <span class="at">cellwidth =</span> <span class="dv">10</span>, <span class="at">scale =</span> <span class="st">"row"</span>, <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>, <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>, <span class="at">show_rownames =</span> gene, <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"DE genes, centered (FC="</span>, lFC, <span class="st">", pajd="</span>, pd, <span class="st">")"</span>), <span class="at">cutree_rows =</span> <span class="dv">2</span>, <span class="at">cutree_cols =</span> <span class="dv">2</span>)</span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.01</span>, <span class="dv">1</span>)</span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=1 &amp; padj=0.01</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 16</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">&lt;-</span> <span class="cf">function</span>(res, <span class="at">pd =</span> <span class="fl">0.001</span>, <span class="at">lFC =</span> <span class="dv">1</span>, <span class="at">gene =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  resSubset <span class="ot">&lt;-</span> <span class="fu">subset</span>(res, padj <span class="sc">&lt;</span> pd <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;</span> lFC)</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  resSubset <span class="ot">&lt;-</span> resSubset[<span class="fu">order</span>(resSubset<span class="sc">$</span>log2FoldChange, <span class="at">decreasing =</span> <span class="cn">TRUE</span>), ]</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  genesSelected <span class="ot">&lt;-</span> <span class="fu">rownames</span>(resSubset)</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  heatData <span class="ot">&lt;-</span> <span class="fu">assay</span>(dds)[genesSelected, ]</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>  my_sample_col <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(<span class="fu">rownames</span>(<span class="fu">colData</span>(dds)), <span class="fu">colData</span>(dds)[<span class="st">"infection"</span>]))</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(my_sample_col) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"name"</span>, <span class="st">"sampletype"</span>)</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(my_sample_col) <span class="ot">&lt;-</span> my_sample_col<span class="sc">$</span>name</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  my_sample_col<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pheatmap</span>(heatData, <span class="at">annotation_col =</span> my_sample_col, <span class="at">cellwidth =</span> <span class="dv">10</span>, <span class="at">scale =</span> <span class="st">"row"</span>, <span class="at">cluster_rows =</span> <span class="cn">TRUE</span>, <span class="at">cluster_cols =</span> <span class="cn">TRUE</span>, <span class="at">show_rownames =</span> gene, <span class="at">main =</span> <span class="fu">paste0</span>(<span class="st">"DE genes, centered (FC="</span>, lFC, <span class="st">", pajd="</span>, pd, <span class="st">")"</span>), <span class="at">cutree_rows =</span> <span class="dv">2</span>, <span class="at">cutree_cols =</span> <span class="dv">2</span>)</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">1</span>)</span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.01</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>**Interpretazione:**</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Intensità del colore:** Indica il livello di espressione del gene nel campione.</span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Dendrogramma:** Mostra le relazioni gerarchiche tra geni (righe) e campioni (colonne).</span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Pattern:**  Cerca blocchi di colore,  che indicano gruppi di geni co-espressi o gruppi di campioni con profili simili.</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.01</span>, <span class="dv">1</span>)</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=1 &amp; padj=0.001</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">1</span>)</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.01</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.01</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.001</span></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>**Interpretazione:**</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Intensità del colore:** Indica il livello di espressione del gene nel campione.</span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Dendrogramma:** Mostra le relazioni gerarchiche tra geni (righe) e campioni (colonne).</span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Pattern:** Cerca blocchi di colore, che indicano gruppi di geni co-espressi o gruppi di campioni con profili simili.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

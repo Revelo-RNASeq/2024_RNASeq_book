@@ -285,7 +285,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Nella fase iniziale del workflow con DESeq2, si importa la matrice di conteggio, si definisce il disegno sperimentale con i relativi metadati e si analizzano i dati grezzi per identificarne le caratteristiche. Si valuta la qualità dei dati, le relazioni tra i campioni e la presenza di outlier. Si applica poi una trasformazione per stabilizzare la varianza e si filtrano i geni a bassa espressione per ottimizzare l’analisi differenziale.</p>
+</header><p>Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla <strong>preparazione dei dati grezzi</strong> di sequenziamento per l’analisi differenziale.</p>
+<p>Prima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale <strong>comprendere a fondo la natura dei dati</strong> che andremo ad analizzare.</p>
+<p>In questa parte del corso, impareremo ad importare i dati di conteggio in R, a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset. Attraverso la visualizzazione e l’analisi esplorativa, saremo in grado di <strong>valutare la qualità dei dati</strong>, identificare potenziali problemi e prepararli per l’analisi statistica con DESeq2.</p>
+<p>Affronteremo anche due passaggi cruciali nella pre-elaborazione dei dati: la trasformazione e il filtraggio. Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile, migliorando l’accuratezza e l’affidabilità dell’analisi differenziale che effettueremo nella seconda parte del nostro workflow.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-dataExplotation" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -797,38 +800,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"_common.R"</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla **preparazione dei dati grezzi** di sequenziamento per l'analisi differenziale.  </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Prima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale **comprendere a fondo la natura dei dati** che andremo ad analizzare.  </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>In questa parte del corso, impareremo ad importare i dati di conteggio in R,  a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset.  Attraverso la visualizzazione e l'analisi esplorativa,  saremo in grado di **valutare la qualità dei dati**,  identificare potenziali problemi e prepararli per l'analisi statistica con DESeq2.</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Affronteremo anche due passaggi cruciali nella pre-elaborazione dei dati:  la trasformazione e il filtraggio.  Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile,  migliorando l'accuratezza e l'affidabilità dell'analisi differenziale che effettueremo nella seconda parte del nostro workflow.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden unless-meta="features.advanced_analysis"}</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Nella fase iniziale del workflow con DESeq2, si importa la matrice di conteggio, si definisce il disegno sperimentale con i relativi metadati e si analizzano i dati grezzi per identificarne le caratteristiche. Si valuta la qualità dei dati, le relazioni tra i campioni e la presenza di outlier. Si applica poi una trasformazione per stabilizzare la varianza e si filtrano i geni a bassa espressione per ottimizzare l'analisi differenziale.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-dataExplotation</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: 500</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "La fase di 'Preparazione e esplorazione dei dati' nell'analisi RNA-seq  consiste nell'organizzare,  visualizzare e  interpretare i dati grezzi  per  individuare pattern,  tendenze e  anomalie.  Questo processo  è cruciale per  preparare i dati  all'analisi differenziale e  ottenere risultati affidabili."</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"images/dataExploration.png"</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### Capitoli di questa sezione:</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nel capitolo @sec-preproc-import</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Nel capitolo @sec-preproc-params definiremo i campioni e i parametri da usare</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla **preparazione dei dati grezzi** di sequenziamento per l'analisi differenziale.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Prima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale **comprendere a fondo la natura dei dati** che andremo ad analizzare.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>In questa parte del corso, impareremo ad importare i dati di conteggio in R, a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset. Attraverso la visualizzazione e l'analisi esplorativa, saremo in grado di **valutare la qualità dei dati**, identificare potenziali problemi e prepararli per l'analisi statistica con DESeq2.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Affronteremo anche due passaggi cruciali nella pre-elaborazione dei dati: la trasformazione e il filtraggio. Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile, migliorando l'accuratezza e l'affidabilità dell'analisi differenziale che effettueremo nella seconda parte del nostro workflow.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden unless-meta="features.advanced_analysis"}</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Nella fase iniziale del workflow con DESeq2, si importa la matrice di conteggio, si definisce il disegno sperimentale con i relativi metadati e si analizzano i dati grezzi per identificarne le caratteristiche. Si valuta la qualità dei dati, le relazioni tra i campioni e la presenza di outlier. Si applica poi una trasformazione per stabilizzare la varianza e si filtrano i geni a bassa espressione per ottimizzare l'analisi differenziale.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-dataExplotation</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| out.width: 500</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "La fase di 'Preparazione e esplorazione dei dati' nell'analisi RNA-seq  consiste nell'organizzare,  visualizzare e  interpretare i dati grezzi  per  individuare pattern,  tendenze e  anomalie.  Questo processo  è cruciale per  preparare i dati  all'analisi differenziale e  ottenere risultati affidabili."</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"images/dataExploration.png"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

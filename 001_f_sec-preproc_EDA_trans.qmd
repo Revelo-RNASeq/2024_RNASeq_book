@@ -38,6 +38,8 @@ vst <- readRDS("data/vst.rds")
 
 Un heatmap è uno strumento potente per visualizzare dati di espressione genica, in quanto consente di osservare pattern di espressione di più geni in diversi campioni simultaneamente.
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
+
 **Come funziona:**
 
 1.  **Matrice di dati:** I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni. Ogni cella della matrice contiene un valore che indica il livello di espressione di un particolare gene in un particolare campione.
@@ -51,6 +53,8 @@ Un heatmap è uno strumento potente per visualizzare dati di espressione genica,
 Spesso, i heatmap vengono combinati con il clustering gerarchico per raggruppare geni e campioni con pattern di espressione simili.
 
 -   **Clustering dei campioni:** I campioni con pattern di espressione simili vengono raggruppati insieme in colonne.
+
+:::
 
 ```{r}
 #| out-width: 100%

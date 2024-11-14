@@ -14,13 +14,14 @@ params:
 source("_common.R")
 ```
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
 # Disegno Sperimentale {#sec-preproc-params}
 
 ## Confronto
 
-- Tutti i rapporti devono essere considerati come **`r params$mynum`** rispetto a **`r params$mydenom`**    
-- Un rapporto di fold change \> 1 (o logFCRatio positivo) indica sovraespressione nella condizione **`r params$mynum`**    
-- Un rapporto di fold change \< 1 (o logFCRatio negativo) indica sovraespressione nella condizione **`r params$mydenom`**    
+-   Tutti i rapporti devono essere considerati come **`r params$mynum`** rispetto a **`r params$mydenom`**\
+-   Un rapporto di fold change \> 1 (o logFCRatio positivo) indica sovraespressione nella condizione **`r params$mynum`**\
+-   Un rapporto di fold change \< 1 (o logFCRatio negativo) indica sovraespressione nella condizione **`r params$mydenom`**
 
 ## Cutoff di Fold Change e p-Value utilizzati
 
@@ -31,6 +32,7 @@ source("_common.R")
 I dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\
 
 Per questo report, **tutti e solo** i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale **viene scartato** e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni **non presenti** nel confronto possano avere sulla trasformazione e normalizzazione dei campioni **presenti** nel confronto.\
+:::
 
 I campioni presi in considerazione in questa analisi appartengono ai gruppi: **`r params$mynum` e `r params$mydenom`**.\
 Questo è il layout del samplesheet, ovvero l'associazione tra i singoli campioni e i gruppi di campioni:

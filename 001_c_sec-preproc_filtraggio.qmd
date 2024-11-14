@@ -33,7 +33,7 @@ coldata <- readRDS("data/coldata.rds")
 # Filtraggio {#sec-preproc-filter}
 
 ::: {.content-hidden when-meta="features.advanced_analysis"}
-Le righe (cioè i geni) del dataset originale che hanno **meno di 5 conteggi di lettura** sono state filtrate: questo è un modo standard per rimuovere i geni non espressi e rendere la tabella dei dati più leggera, poiché molti geni sono per lo più non espressi. In casi particolari può essere utilizzato un numero diverso (più alto), al fine di essere più stringenti. 
+Le righe (cioè i geni) del dataset originale che hanno **meno di 5 conteggi di lettura** sono state filtrate: questo è un modo standard per rimuovere i geni non espressi e rendere la tabella dei dati più leggera, poiché molti geni sono per lo più non espressi. In casi particolari può essere utilizzato un numero diverso (più alto), al fine di essere più stringenti.
 :::
 
 ::: {.content-hidden unless-meta="features.advanced_analysis"}

@@ -34,6 +34,8 @@ res <- readRDS("data/res.rds")
 
 Nell'analisi RNA-seq, lo shrinkage è una tecnica statistica che migliora l'interpretabilità e l'accuratezza dei risultati, soprattutto per i geni con bassa espressione o alta varianza. DESeq2 offre metodi di shrinkage sofisticati per i log2 fold change, che aiutano a ottenere stime più robuste e affidabili.
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
+
 ## Visualizzazione dei dati con `plotMA()`
 
 Prima di applicare lo shrinkage, visualizziamo i risultati grezzi del test di Wald usando la funzione `plotMA()`.
@@ -45,16 +47,21 @@ plotMA(res)
 ```
 
 Questo grafico mostra la relazione tra l'intensità media e il log2 fold change per ogni gene. I geni significativamente differenzialmente espressi sono colorati in blu.
+:::
 
 ## Perché lo shrinkage è importante?
 
-* **Riduzione del rumore:** Lo shrinkage riduce l'impatto del rumore nelle stime dei log2 fold change, soprattutto per i geni con bassa espressione o alta varianza.
-* **Migliore interpretabilità:**  Senza shrinkage, i geni con bassa espressione possono mostrare log2 fold change molto grandi ma poco affidabili. Lo shrinkage modera questi effetti, rendendo i risultati più interpretabili.
-* **Maggiore accuratezza:** Lo shrinkage migliora l'accuratezza delle stime dei log2 fold change, riducendo il rischio di falsi positivi e falsi negativi.
+-   **Riduzione del rumore:** Lo shrinkage riduce l'impatto del rumore nelle stime dei log2 fold change, soprattutto per i geni con bassa espressione o alta varianza.
+-   **Migliore interpretabilità:** Senza shrinkage, i geni con bassa espressione possono mostrare log2 fold change molto grandi ma poco affidabili. Lo shrinkage modera questi effetti, rendendo i risultati più interpretabili.
+-   **Maggiore accuratezza:** Lo shrinkage migliora l'accuratezza delle stime dei log2 fold change, riducendo il rischio di falsi positivi e falsi negativi.
+
+::: {.content-hidden when-meta="features.advanced_analysis"}
 
 ## Come funziona lo shrinkage in DESeq2?
 
 DESeq2 utilizza un metodo di shrinkage bayesiano che "restringe" le stime dei log2 fold change verso valori più probabili, basandosi sulla distribuzione a priori dei log2 fold change e sulla dispersione stimata per ciascun gene. I geni con bassa espressione o alta varianza vengono "shrunk" maggiormente verso zero, mentre i geni con alta espressione e bassa varianza vengono "shrunk" meno.
+
+:::
 
 ## Applicazione dello shrinkage
 

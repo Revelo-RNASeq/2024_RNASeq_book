@@ -38,6 +38,7 @@ dds_stat <- readRDS("data/dds_stat.rds")
 
 Dopo aver normalizzato i dati e stimato i parametri del modello, DESeq2 applica test statistici per identificare i geni differenzialmente espressi tra le condizioni sperimentali.
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
 **Test di Wald**
 
 Il test statistico principale utilizzato da DESeq2 è il **test di Wald**. Questo test verifica l'ipotesi nulla che il log2 fold change di un gene tra due condizioni sia uguale a zero. In altre parole, il test verifica se c'è una differenza significativa nell'espressione del gene tra le condizioni.
@@ -55,9 +56,9 @@ Poiché vengono testati migliaia di geni contemporaneamente, è necessario corre
 **Interpretazione dei risultati**
 
 I geni con un p-value aggiustato (padj) inferiore a una soglia di significatività (ad esempio, 0.05) sono considerati differenzialmente espressi. Il log2 fold change indica la direzione e l'entità della differenza di espressione.
+:::
 
 ```{r}
 ddsf <- nbinomWaldTest(dds_stat)
 
 ```
-

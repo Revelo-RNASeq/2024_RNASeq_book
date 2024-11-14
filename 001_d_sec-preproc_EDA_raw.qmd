@@ -35,6 +35,7 @@ dds <- readRDS("data/dds_fitered.rds")
 
 L'analisi esplorativa dei dati (EDA) sui dati di conteggio grezzi di RNA-Seq è fondamentale prima della normalizzazione per diverse ragioni:
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
 **1. Comprensione della struttura e della variabilità dei dati:**
 
 -   **Distribuzione dei conteggi:** l'EDA aiuta a visualizzare la distribuzione dei conteggi grezzi all'interno e tra i campioni. Questo rivela la potenziale asimmetria, la presenza di outlier e l'intervallo generale dei valori di espressione.
@@ -50,12 +51,21 @@ L'analisi esplorativa dei dati (EDA) sui dati di conteggio grezzi di RNA-Seq è 
 
 -   **Scelta del metodo di normalizzazione:** le caratteristiche dei dati grezzi, come la presenza di geni altamente variabili o effetti batch, informano la scelta del metodo di normalizzazione più appropriato.
 -   **Filtraggio dei geni a basso conteggio:** l'EDA aiuta a identificare i geni con conteggi costantemente bassi tra i campioni, che possono essere filtrati per ridurre il rumore e migliorare la potenza statistica.
+:::
 
+::: {.content-hidden unless-meta="features.advanced_analysis"}
+**1. Comprensione della struttura e della variabilità dei dati**   
+
+**2. Identificazione di potenziali bias**
+
+**3. Guida alla normalizzazione e all'analisi a valle**
+:::
 
 ## Distribuzione dei conteggi
 
 ```{r}
 #| out-width: 100%
+#| fig-width: 10
 library(patchwork)
 p1 <- readcounts |> 
   tibble() |> 
@@ -102,41 +112,45 @@ tibble(Label = names(tmp),
 
 ```{r}
 #| out-width: 100%
-p1 <- readcounts |> 
+#| fig-width: 10
+p1 <- readcounts |>
   ggplot(aes(x = GSM2545336, y = GSM2545336)) +
-  geom_point()+
+  geom_point() +
   geom_abline(slope = 1) +
   labs(title = "Stesso campione")
 
-p2 <- readcounts |> 
+p2 <- readcounts |>
   ggplot(aes(x = GSM2545337, y = GSM2545338)) +
-  geom_point()+
+  geom_point() +
   geom_abline(slope = 1) +
   labs(title = "Due campioni controllo")
 
-p3 <- readcounts |> 
+p3 <- readcounts |>
   ggplot(aes(x = GSM2545339, y = GSM2545341)) +
-  geom_point()+
+  geom_point() +
   geom_abline(slope = 1) +
   labs(title = "Due campioni trattato")
 
-p4 <- readcounts |> 
+p4 <- readcounts |>
   ggplot(aes(x = GSM2545338, y = GSM2545342)) +
   geom_point() +
-  geom_abline(slope = 1)+
+  geom_abline(slope = 1) +
   labs(title = "Confronto tra un campione trattato e uno controllo")
 
 (p1 + p2) / (p3 + p4)
 ```
 
-## Identificazione di potenziali bias 
+## Identificazione di potenziali bias
 
-### Principal Component Analysis)
+### Principal Component Analysis
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
 Un grafico PCA (Principal Component Analysis) è un metodo di visualizzazione dei dati che viene utilizzato per mostrare la varianza tra più campioni. Il grafico PCA prende i dati ad alta dimensione e li riduce a un numero inferiore di dimensioni, in genere due o tre, che possono essere visualizzate in un grafico. I componenti principali sono nuove variabili che vengono create come combinazioni lineari delle variabili originali. Il primo componente principale cattura la maggior varianza possibile nei dati e il secondo componente principale cattura la seconda maggior varianza possibile e così via. Il grafico PCA mostra i campioni in base ai loro punteggi sui componenti principali, che sono un riflesso dei livelli di espressione genica dei campioni. I campioni con profili di espressione simili saranno raggruppati insieme nel grafico PCA.
+:::
 
 ```{r}
 #| out-width: 100%
+#| fig-width: 10 
 pca_res <- prcomp(readcounts, scale. = TRUE)
 
 

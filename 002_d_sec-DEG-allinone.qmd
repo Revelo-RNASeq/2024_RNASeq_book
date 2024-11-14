@@ -34,7 +34,10 @@ vst <- readRDS("data/vst.rds")
 
 # All in one {#sec-deg-allinone}
 
-In DESeq2, la funzione `DESeq()` offre un modo conveniente per eseguire l'intera analisi dell'espressione differenziale in un unico passaggio. Questa funzione integra i tre passaggi chiave appena visti:
+In DESeq2, la funzione `DESeq()` offre un modo conveniente per eseguire l'intera analisi dell'espressione differenziale in un unico passaggio.
+
+::: {.content-hidden when-meta="features.advanced_analysis"}
+Questa funzione integra i tre passaggi chiave appena visti:
 
 1.  **`estimateSizeFactors()`:** Normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria.
 2.  **`estimateDispersions()`:** Stima la dispersione dei geni, ovvero la variabilità dell'espressione tra i replicati.
@@ -46,9 +49,10 @@ In DESeq2, la funzione `DESeq()` offre un modo conveniente per eseguire l'intera
 
 **Vantaggi:**
 
-* Semplicità: Esegue l'intera analisi in un unico passaggio.
-* Accuratezza: Applica i metodi di normalizzazione e trasformazione appropriati.
-* Flessibilità: Offre diverse opzioni per personalizzare l'analisi.
+-   Semplicità: Esegue l'intera analisi in un unico passaggio.
+-   Accuratezza: Applica i metodi di normalizzazione e trasformazione appropriati.
+-   Flessibilità: Offre diverse opzioni per personalizzare l'analisi.
+:::
 
 ```{r}
 ddsf <- DESeq(dds)
@@ -64,7 +68,9 @@ saveRDS(res, "data/res.rds")
 
 La funzione `results()` in DESeq2 è fondamentale per estrarre ed esplorare i risultati dell'analisi dell'espressione differenziale.
 
+::: {.content-hidden when-meta="features.advanced_analysis"}
 `results()` estrae i risultati del test di Wald per l'espressione differenziale da un oggetto DESeqDataSet dopo aver eseguito DESeq(). Restituisce un oggetto DataFrame contenente informazioni sui geni, come log2 fold change, p-value e statistiche del test.
+:::
 
 ```{r}
 out_res <- tibble(
@@ -79,11 +85,13 @@ out_res <- tibble(
   mutate(across(where(is.double), ~ round(., digits = 2)))
 
 datatable(out_res,
+  extensions = "Buttons",
+  filter = "top",
   options = list(
     pageLength = 20,
     autoWidth = TRUE,
     dom = "Bfrtip",
-    filter = "top"
+    buttons = c("csv", "excel", "pdf")
   ), rownames = TRUE
 )
 ```
