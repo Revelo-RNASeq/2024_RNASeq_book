@@ -281,26 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>La normalizzazione è un processo fondamentale nell’analisi RNA-seq, in quanto consente di confrontare in modo accurato l’espressione genica tra campioni diversi. DESeq2 implementa un metodo di normalizzazione robusto ed efficace che tiene conto delle differenze nella dimensione della libreria e della composizione del trascrittoma.</p>
-<p><strong>Perché è necessaria la normalizzazione?</strong></p>
-<p>Le librerie di sequenziamento RNA possono variare in termini di dimensione, ovvero il numero totale di reads sequenziate. Queste differenze possono essere dovute a variazioni tecniche nel processo di preparazione delle librerie o a differenze biologiche nella quantità di RNA di partenza. Senza normalizzazione, le differenze nella dimensione della libreria potrebbero essere erroneamente interpretate come differenze nell’espressione genica.</p>
-<p><strong>Il metodo di normalizzazione di DESeq2</strong></p>
-<p>DESeq2 utilizza un metodo di normalizzazione basato sui <strong>fattori di dimensione</strong> (size factors). Questo metodo assume che la maggior parte dei geni non sia differenzialmente espressa tra le condizioni sperimentali.</p>
-<p><strong>Ecco come funziona:</strong></p>
-<ol type="1">
-<li><p><strong>Calcolo della mediana del rapporto:</strong> Per ogni gene, viene calcolato il rapporto tra il suo conteggio in un campione e la mediana dei suoi conteggi in tutti i campioni.</p></li>
-<li><p><strong>Stima dei fattori di dimensione:</strong> Per ogni campione, il fattore di dimensione è la mediana dei rapporti calcolati al punto 1. Questo fattore rappresenta un fattore di scala che viene utilizzato per normalizzare i conteggi grezzi.</p></li>
-<li><p><strong>Normalizzazione dei conteggi:</strong> I conteggi grezzi di ciascun gene vengono divisi per il fattore di dimensione del corrispondente campione.</p></li>
-</ol>
-<p><strong>Vantaggi del metodo di DESeq2:</strong></p>
-<ul>
-<li>
-<strong>Robustezza:</strong> Il metodo è robusto agli outlier, ovvero a geni con conteggi estremi che potrebbero influenzare altri metodi di normalizzazione.</li>
-<li>
-<strong>Efficacia:</strong> Il metodo è efficace nel correggere le differenze nella dimensione della libreria e nella composizione del trascrittoma.</li>
-<li>
-<strong>Semplicità:</strong> Il metodo è relativamente semplice da comprendere e implementare.</li>
-</ul>
+</header><p>La normalizzazione rappresenta una fase cruciale nell’analisi RNA-seq, in quanto permette di confrontare accuratamente l’espressione genica tra differenti campioni. A tal fine, DESeq2 implementa un metodo robusto ed efficace che considera le variazioni nella dimensione della libreria e la composizione del trascrittoma.</p>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dds_esf</span> <span class="op">&lt;-</span> <span class="fu">estimateSizeFactors</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span></span>
 <span></span>
@@ -910,41 +891,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu"># Normalizzazione {#sec-deg-norm}</span></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>La normalizzazione è un processo fondamentale nell'analisi RNA-seq, in quanto consente di confrontare in modo accurato l'espressione genica tra campioni diversi. DESeq2 implementa un metodo di normalizzazione robusto ed efficace che tiene conto delle differenze nella dimensione della libreria e della composizione del trascrittoma.</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>**Perché è necessaria la normalizzazione?**</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Le librerie di sequenziamento RNA possono variare in termini di dimensione, ovvero il numero totale di reads sequenziate. Queste differenze possono essere dovute a variazioni tecniche nel processo di preparazione delle librerie o a differenze biologiche nella quantità di RNA di partenza. Senza normalizzazione, le differenze nella dimensione della libreria potrebbero essere erroneamente interpretate come differenze nell'espressione genica.</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>**Il metodo di normalizzazione di DESeq2**</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>DESeq2 utilizza un metodo di normalizzazione basato sui **fattori di dimensione** (size factors).  Questo metodo assume che la maggior parte dei geni non sia differenzialmente espressa tra le condizioni sperimentali. </span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>**Ecco come funziona:**</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Calcolo della mediana del rapporto:** Per ogni gene, viene calcolato il rapporto tra il suo conteggio in un campione e la mediana dei suoi conteggi in tutti i campioni.</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Stima dei fattori di dimensione:** Per ogni campione, il fattore di dimensione è la mediana dei rapporti calcolati al punto 1. Questo fattore rappresenta un fattore di scala che viene utilizzato per normalizzare i conteggi grezzi.</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Normalizzazione dei conteggi:** I conteggi grezzi di ciascun gene vengono divisi per il fattore di dimensione del corrispondente campione.</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>**Vantaggi del metodo di DESeq2:**</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Robustezza:** Il metodo è robusto agli outlier, ovvero a geni con conteggi estremi che potrebbero influenzare altri metodi di normalizzazione.</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Efficacia:** Il metodo è efficace nel correggere le differenze nella dimensione della libreria e nella composizione del trascrittoma.</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>**Semplicità:** Il metodo è relativamente semplice da comprendere e implementare.</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>dds_esf <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds_esf)</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(dds_esf, <span class="st">"data/dss_esf.rds"</span>)</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>La normalizzazione è un processo fondamentale nell'analisi RNA-seq, in quanto consente di confrontare in modo accurato l'espressione genica tra campioni diversi. DESeq2 implementa un metodo di normalizzazione robusto ed efficace che tiene conto delle differenze nella dimensione della libreria e della composizione del trascrittoma.</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>**Perché è necessaria la normalizzazione?**</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>Le librerie di sequenziamento RNA possono variare in termini di dimensione, ovvero il numero totale di reads sequenziate. Queste differenze possono essere dovute a variazioni tecniche nel processo di preparazione delle librerie o a differenze biologiche nella quantità di RNA di partenza. Senza normalizzazione, le differenze nella dimensione della libreria potrebbero essere erroneamente interpretate come differenze nell'espressione genica.</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>**Il metodo di normalizzazione di DESeq2**</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>DESeq2 utilizza un metodo di normalizzazione basato sui **fattori di dimensione** (size factors). Questo metodo assume che la maggior parte dei geni non sia differenzialmente espressa tra le condizioni sperimentali.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>**Ecco come funziona:**</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Calcolo della mediana del rapporto:** Per ogni gene, viene calcolato il rapporto tra il suo conteggio in un campione e la mediana dei suoi conteggi in tutti i campioni.</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Stima dei fattori di dimensione:** Per ogni campione, il fattore di dimensione è la mediana dei rapporti calcolati al punto 1. Questo fattore rappresenta un fattore di scala che viene utilizzato per normalizzare i conteggi grezzi.</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Normalizzazione dei conteggi:** I conteggi grezzi di ciascun gene vengono divisi per il fattore di dimensione del corrispondente campione.</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>**Vantaggi del metodo di DESeq2:**</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Robustezza:** Il metodo è robusto agli outlier, ovvero a geni con conteggi estremi che potrebbero influenzare altri metodi di normalizzazione.</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Efficacia:** Il metodo è efficace nel correggere le differenze nella dimensione della libreria e nella composizione del trascrittoma.</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Semplicità:** Il metodo è relativamente semplice da comprendere e implementare.</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden unless-meta="features.advanced_analysis"}</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>La normalizzazione rappresenta una fase cruciale nell'analisi RNA-seq, in quanto permette di confrontare accuratamente l'espressione genica tra differenti campioni.  A tal fine, DESeq2 implementa un metodo robusto ed efficace che considera le variazioni nella dimensione della libreria e la composizione del trascrittoma.</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>dds_esf <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds_esf)</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(dds_esf, <span class="st">"data/dss_esf.rds"</span>)</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

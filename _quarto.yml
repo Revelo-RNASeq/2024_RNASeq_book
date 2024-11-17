@@ -65,4 +65,4 @@ params:
   myfc: 0.8
   mypadj: fdr
   
-editor: visual
+editor: source

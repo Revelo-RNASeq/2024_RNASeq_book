@@ -285,10 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Benvenuti alla prima parte del nostro corso di analisi RNA-seq con DESeq2! In questa fase iniziale, ci concentreremo sulla <strong>preparazione dei dati grezzi</strong> di sequenziamento per l’analisi differenziale.</p>
-<p>Prima di poter applicare metodi statistici per identificare i geni con espressione differenziale, è fondamentale <strong>comprendere a fondo la natura dei dati</strong> che andremo ad analizzare.</p>
-<p>In questa parte del corso, impareremo ad importare i dati di conteggio in R, a definire correttamente il disegno sperimentale e ad esplorare le caratteristiche principali del dataset. Attraverso la visualizzazione e l’analisi esplorativa, saremo in grado di <strong>valutare la qualità dei dati</strong>, identificare potenziali problemi e prepararli per l’analisi statistica con DESeq2.</p>
-<p>Affronteremo anche due passaggi cruciali nella pre-elaborazione dei dati: la trasformazione e il filtraggio. Queste tecniche ci permetteranno di stabilizzare la varianza dei dati e di rimuovere geni con informazione poco affidabile, migliorando l’accuratezza e l’affidabilità dell’analisi differenziale che effettueremo nella seconda parte del nostro workflow.</p>
+</header><p>Nella fase iniziale del workflow con DESeq2, si importa la matrice di conteggio, si definisce il disegno sperimentale con i relativi metadati e si analizzano i dati grezzi per identificarne le caratteristiche. Si valuta la qualità dei dati, le relazioni tra i campioni e la presenza di outlier. Si applica poi una trasformazione per stabilizzare la varianza e si filtrano i geni a bassa espressione per ottimizzare l’analisi differenziale.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-dataExplotation" class="quarto-float quarto-figure quarto-figure-center anchored">

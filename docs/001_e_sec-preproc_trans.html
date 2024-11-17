@@ -267,14 +267,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#grafico-mediadeviazione-standard" id="toc-grafico-mediadeviazione-standard" class="nav-link active" data-scroll-target="#grafico-mediadeviazione-standard"><span class="header-section-number">5.1</span> Grafico Media/Deviazione standard</a></li>
-  <li><a href="#trasformazione" id="toc-trasformazione" class="nav-link" data-scroll-target="#trasformazione"><span class="header-section-number">5.2</span> Trasformazione</a></li>
   <li>
-<a href="#vst-vs.-rlog" id="toc-vst-vs.-rlog" class="nav-link" data-scroll-target="#vst-vs.-rlog"><span class="header-section-number">5.3</span> VST vs.&nbsp;rlog</a>
+<a href="#trasformazione" id="toc-trasformazione" class="nav-link" data-scroll-target="#trasformazione"><span class="header-section-number">5.2</span> Trasformazione</a>
   <ul class="collapse">
-<li><a href="#quando-scegliere-vst" id="toc-quando-scegliere-vst" class="nav-link" data-scroll-target="#quando-scegliere-vst"><span class="header-section-number">5.3.1</span> Quando scegliere VST?</a></li>
-  <li><a href="#quando-scegliere-rlog" id="toc-quando-scegliere-rlog" class="nav-link" data-scroll-target="#quando-scegliere-rlog"><span class="header-section-number">5.3.2</span> Quando scegliere rlog?</a></li>
-  <li><a href="#vst" id="toc-vst" class="nav-link" data-scroll-target="#vst"><span class="header-section-number">5.3.3</span> VST</a></li>
-  <li><a href="#rlog" id="toc-rlog" class="nav-link" data-scroll-target="#rlog"><span class="header-section-number">5.3.4</span> rlog</a></li>
+<li><a href="#vst" id="toc-vst" class="nav-link" data-scroll-target="#vst"><span class="header-section-number">5.2.1</span> VST</a></li>
+  <li><a href="#rlog" id="toc-rlog" class="nav-link" data-scroll-target="#rlog"><span class="header-section-number">5.2.2</span> rlog</a></li>
   </ul>
 </li>
   </ul></nav>
@@ -306,75 +303,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Un grafico Media/DS (Deviazione Standard) è uno strumento utile per valutare l’efficacia dei metodi di normalizzazione dell’abbondanza genica, specialmente nell’analisi dei dati RNA-Seq. Ecco come funziona:</p>
-<p><strong>1. Le basi</strong></p>
-<ul>
-<li>
-<strong>Media:</strong> Il livello di espressione medio di un gene in tutti i campioni del tuo set di dati.</li>
-<li>
-<strong>Deviazione Standard (DS):</strong> Una misura di quanto varia l’espressione di un gene tra i tuoi campioni.</li>
-</ul>
-<p><strong>2. Costruire il grafico</strong></p>
-<ul>
-<li>
-<strong>Asse X:</strong> L’abbondanza media del gene (di solito su una scala logaritmica).</li>
-<li>
-<strong>Asse Y:</strong> La deviazione standard dell’abbondanza del gene (anche spesso trasformata logaritmicamente).</li>
-<li>
-<strong>Ogni punto:</strong> Rappresenta un singolo gene nel tuo set di dati.</li>
-</ul>
-<p><strong>3. Interpretazione</strong></p>
-<ul>
-<li>
-<strong>Scenario ideale:</strong> Dopo una normalizzazione efficace, idealmente dovresti vedere una linea orizzontale o una tendenza relativamente piatta nel grafico. Ciò indica che la deviazione standard (variabilità) dell’espressione genica è coerente tra i diversi livelli di espressione media.</li>
-<li>
-<strong>Problemi di normalizzazione:</strong> Se vedi una forte tendenza (ad esempio, una forma a imbuto in cui la DS aumenta con la media), suggerisce che il tuo metodo di normalizzazione non ha completamente tenuto conto di bias sistematici. Questi bias potrebbero essere dovuti a:
-<ul>
-<li>
-<strong>Differenze nella dimensione della libreria:</strong> I campioni con più letture tendono ad avere una varianza maggiore.</li>
-<li>
-<strong>Bias della lunghezza del gene:</strong> I geni più lunghi tendono ad avere più letture e quindi una maggiore varianza.</li>
-<li>
-<strong>Bias del contenuto di GC:</strong> I geni con diverso contenuto di GC possono essere influenzati in modo diverso durante la preparazione della libreria.</li>
-</ul>
-</li>
-</ul>
-<p><strong>4. Perché è importante</strong></p>
-<ul>
-<li>
-<strong>Analisi accurata dell’espressione differenziale:</strong> La normalizzazione mira a ridurre questi bias tecnici in modo da poter identificare con sicurezza le vere differenze biologiche nell’espressione genica tra i gruppi (ad esempio, trattato vs.&nbsp;controllo). Un grafico Media/DS ti aiuta a vedere se il metodo scelto raggiunge questo obiettivo.</li>
-<li>
-<strong>Confronto tra metodi di normalizzazione:</strong> Puoi utilizzare i grafici Media/DS per confrontare le prestazioni di diverse tecniche di normalizzazione sui tuoi dati e scegliere quella che stabilizza meglio la varianza.</li>
-</ul>
-<p><strong>Esempio:</strong></p>
-<p>Immagina un grafico Media/DS in cui la deviazione standard è molto più alta per i geni con espressione media elevata. Ciò suggerisce un bias correlato alla profondità di sequenziamento o alla lunghezza del gene. Un buon metodo di normalizzazione dovrebbe ridurre questa tendenza, portando a una distribuzione più uniforme delle deviazioni standard su tutti i livelli di espressione.</p>
-<p><strong>In sintesi:</strong> Il grafico Media/DS è uno strumento diagnostico visivo che ti aiuta a valutare la qualità della normalizzazione dell’abbondanza genica. È un passaggio chiave per garantire l’accuratezza e l’affidabilità delle analisi a valle come l’espressione genica differenziale.</p>
 </section><section id="trasformazione" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="trasformazione">
 <span class="header-section-number">5.2</span> Trasformazione</h2>
 <p>Per stabilizzare la varianza e rendere i dati più adatti alle assunzioni del modello statistico, possiamo applicare trasformazioni come la Variance Stabilizing Transformation (VST) o la Regularized Log Transformation (rlog). La scelta della trasformazione dipenderà dalle caratteristiche dei dati e dagli obiettivi dell’analisi.</p>
-</section><section id="vst-vs.-rlog" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="vst-vs.-rlog">
-<span class="header-section-number">5.3</span> VST vs.&nbsp;rlog</h2>
-<p>Sia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. Questo è importante perché il modello statistico di DESeq2 assume che la varianza sia approssimativamente costante per tutti i geni.</p>
-<section id="quando-scegliere-vst" class="level3" data-number="5.3.1"><h3 data-number="5.3.1" class="anchored" data-anchor-id="quando-scegliere-vst">
-<span class="header-section-number">5.3.1</span> Quando scegliere VST?</h3>
-<ul>
-<li>
-<strong>Analisi di Espressione Differenziale</strong>: La VST è generalmente preferita per l’analisi dell’espressione differenziale, poiché è stata specificamente progettata per questo scopo.</li>
-<li>
-<strong>Visualizzazione di Heatmap e PCA</strong>: La VST è adatta per visualizzare i dati in heatmap e PCA, in quanto preserva bene le distanze tra i campioni.</li>
-<li>
-<strong>Dataset di Grandi Dimensioni</strong>: La VST è computazionalmente più efficiente della rlog, quindi è preferibile per dataset con molti geni o campioni.</li>
-</ul></section><section id="quando-scegliere-rlog" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="quando-scegliere-rlog">
-<span class="header-section-number">5.3.2</span> Quando scegliere rlog?</h3>
-<ul>
-<li>
-<strong>Esplorazione dei Dati</strong>: La rlog può essere utile per esplorare i dati in modo più intuitivo, poiché produce valori che sono più simili ai log2 fold change.</li>
-<li>
-<strong>Clustering</strong>: La rlog può essere preferita per il clustering dei geni, poiché tende a separare meglio i cluster.</li>
-<li>
-<strong>Dataset di Piccole Dimensioni</strong>: La rlog può essere più accurata della VST per dataset con pochi geni o campioni.</li>
-</ul></section><section id="vst" class="level3" data-number="5.3.3"><h3 data-number="5.3.3" class="anchored" data-anchor-id="vst">
-<span class="header-section-number">5.3.3</span> VST</h3>
+<section id="vst" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="vst">
+<span class="header-section-number">5.2.1</span> VST</h3>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vst</span> <span class="op">&lt;-</span> <span class="fu">DESeq2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/vst.html">vst</a></span><span class="op">(</span><span class="va">dds</span>, blind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">vst</span>, <span class="st">"data/vst.rds"</span><span class="op">)</span></span>
@@ -386,8 +319,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section><section id="rlog" class="level3" data-number="5.3.4"><h3 data-number="5.3.4" class="anchored" data-anchor-id="rlog">
-<span class="header-section-number">5.3.4</span> rlog</h3>
+</section><section id="rlog" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="rlog">
+<span class="header-section-number">5.2.2</span> rlog</h3>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rlog</span> <span class="op">&lt;-</span> <span class="fu">DESeq2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/rlog.html">rlog</a></span><span class="op">(</span><span class="va">dds</span>, blind <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">meanSdPlot</span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">rlog</span><span class="op">)</span>, ranks <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

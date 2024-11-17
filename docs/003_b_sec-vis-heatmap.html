@@ -267,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#fc1-padj0.01" id="toc-fc1-padj0.01" class="nav-link active" data-scroll-target="#fc1-padj0.01"><span class="header-section-number">13.1</span> FC=1 &amp; padj=0.01</a></li>
   <li><a href="#fc1-padj0.001" id="toc-fc1-padj0.001" class="nav-link" data-scroll-target="#fc1-padj0.001"><span class="header-section-number">13.2</span> FC=1 &amp; padj=0.001</a></li>
-  <li><a href="#fc2-padj0.01" id="toc-fc2-padj0.01" class="nav-link" data-scroll-target="#fc2-padj0.01"><span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01</a></li>
-  <li><a href="#fc2-padj0.001" id="toc-fc2-padj0.001" class="nav-link" data-scroll-target="#fc2-padj0.001"><span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001</a></li>
+  <li><a href="#fc2-padj0.01-gene-names" id="toc-fc2-padj0.01-gene-names" class="nav-link" data-scroll-target="#fc2-padj0.01-gene-names"><span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01 &amp; gene names</a></li>
+  <li><a href="#fc2-padj0.001-gene-names" id="toc-fc2-padj0.001-gene-names" class="nav-link" data-scroll-target="#fc2-padj0.001-gene-names"><span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001 &amp; gene names</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -322,8 +322,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section><section id="fc2-padj0.01" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="fc2-padj0.01">
-<span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01</h2>
+</section><section id="fc2-padj0.01-gene-names" class="level2" data-number="13.3"><h2 data-number="13.3" class="anchored" data-anchor-id="fc2-padj0.01-gene-names">
+<span class="header-section-number">13.3</span> FC=2 &amp; padj=0.01 &amp; gene names</h2>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hm</span><span class="op">(</span><span class="va">res</span>, <span class="fl">0.01</span>, <span class="fl">2</span>, <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -333,8 +333,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section><section id="fc2-padj0.001" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="fc2-padj0.001">
-<span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001</h2>
+</section><section id="fc2-padj0.001-gene-names" class="level2" data-number="13.4"><h2 data-number="13.4" class="anchored" data-anchor-id="fc2-padj0.001-gene-names">
+<span class="header-section-number">13.4</span> FC=2 &amp; padj=0.001 &amp; gene names</h2>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hm</span><span class="op">(</span><span class="va">res</span>, <span class="fl">0.001</span>, <span class="fl">2</span>, <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output-display">
@@ -923,13 +923,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">1</span>)</span>
 <span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.01</span></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.01 &amp; gene names</span></span>
 <span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
 <span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.01</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>
 <span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.001</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## FC=2 &amp; padj=0.001 &amp; gene names</span></span>
 <span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
 <span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a><span class="fu">hm</span>(res, <span class="fl">0.001</span>, <span class="dv">2</span>, <span class="cn">TRUE</span>)</span>

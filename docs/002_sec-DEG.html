@@ -281,16 +281,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Benvenuti alla seconda parte del corso, dove ci addentreremo nel cuore dell’analisi RNA-seq: l’analisi dell’espressione differenziale!</p>
-<p>Dopo aver accuratamente preparato e esplorato i nostri dati, siamo pronti per applicare il potente framework statistico offerto da DESeq2 per identificare i geni che mostrano cambiamenti significativi di espressione tra le diverse condizioni sperimentali.</p>
-<p>In questa parte del corso, ci concentreremo sui seguenti aspetti fondamentali:</p>
-<ul>
-<li><p><strong>Normalizzazione</strong>: Vedremo come DESeq2 normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria e di altri fattori tecnici, garantendo un confronto accurato tra i campioni.</p></li>
-<li><p><strong>Modellazione Statistica</strong>: Vedremo il modello statistico alla base di DESeq2 che si basa sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.</p></li>
-<li><p><strong>Testing</strong>: Impareremo come DESeq2 applica test statistici per identificare i geni differenzialmente espressi, tenendo conto del disegno sperimentale e controllando il tasso di falsi positivi.</p></li>
+</header><ul>
+<li><p><strong>Normalizzazione</strong>: Il processo di normalizzazione in DESeq2 corregge le differenze nella dimensione della libreria e altri fattori tecnici, assicurando un confronto accurato tra i campioni.</p></li>
+<li><p><strong>Modellazione Statistica</strong>: DESeq2 utilizza un modello statistico basato sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.</p></li>
+<li><p><strong>Testing</strong>: L’analisi differenziale di espressione genica in DESeq2 si basa su test statistici che tengono conto del disegno sperimentale e controllano il tasso di falsi positivi.</p></li>
 </ul>
-<p>Attraverso questi passaggi, saremo in grado di ottenere una <strong>lista di geni differenzialmente espressi</strong>, completa di stime dell’effetto (log2 fold change) e significatività statistica (p-value aggiustati).</p>
-<p>Nei capitoli successivi, approfondiremo l’esplorazione dei risultati per contrasti specifici, la visualizzazione dei dati e l’interpretazione biologica dei risultati.</p>
+<p>Attraverso queste fasi, si otterrà una <strong>lista di geni differenzialmente espressi</strong>, comprensiva di stime dell’effetto (log2 fold change) e significatività statistica (p-value aggiustati).</p>
 
 
 <!-- -->
@@ -785,22 +781,35 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"_common.R"</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>Benvenuti alla seconda parte del corso, dove ci addentreremo nel cuore dell'analisi RNA-seq: l'analisi dell'espressione differenziale!</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Dopo aver accuratamente preparato e  esplorato i nostri dati, siamo pronti per applicare il potente framework statistico offerto da DESeq2 per identificare i geni che mostrano cambiamenti significativi di espressione tra le diverse condizioni sperimentali.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Dopo aver accuratamente preparato e esplorato i nostri dati, siamo pronti per applicare il potente framework statistico offerto da DESeq2 per identificare i geni che mostrano cambiamenti significativi di espressione tra le diverse condizioni sperimentali.</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>In questa parte del corso, ci concentreremo sui seguenti aspetti fondamentali:</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Normalizzazione**: Vedremo come DESeq2 normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria e di altri fattori tecnici, garantendo un confronto accurato tra i campioni.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Normalizzazione**: Vedremo come DESeq2 normalizza i dati di conteggio per tenere conto delle differenze nella dimensione della libreria e di altri fattori tecnici, garantendo un confronto accurato tra i campioni.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Modellazione Statistica**: Vedremo il modello statistico alla base di DESeq2 che si basa sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Modellazione Statistica**: Vedremo il modello statistico alla base di DESeq2 che si basa sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Testing**: Impareremo come DESeq2 applica test statistici per identificare i geni differenzialmente espressi,  tenendo conto del disegno sperimentale e controllando il tasso di falsi positivi.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Testing**: Impareremo come DESeq2 applica test statistici per identificare i geni differenzialmente espressi, tenendo conto del disegno sperimentale e controllando il tasso di falsi positivi.</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Attraverso questi passaggi,  saremo in grado di ottenere una **lista di geni differenzialmente espressi**,  completa di stime dell'effetto (log2 fold change)  e significatività statistica (p-value aggiustati).</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Attraverso questi passaggi, saremo in grado di ottenere una **lista di geni differenzialmente espressi**, completa di stime dell'effetto (log2 fold change) e significatività statistica (p-value aggiustati).</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Nei capitoli successivi, approfondiremo l'esplorazione dei risultati per contrasti specifici,  la visualizzazione dei dati e l'interpretazione biologica dei risultati.</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Nei capitoli successivi, approfondiremo l'esplorazione dei risultati per contrasti specifici, la visualizzazione dei dati e l'interpretazione biologica dei risultati.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden unless-meta="features.advanced_analysis"}</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Normalizzazione**:  Il processo di normalizzazione in DESeq2 corregge le differenze nella dimensione della libreria e altri fattori tecnici, assicurando un confronto accurato tra i campioni.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Modellazione Statistica**: DESeq2 utilizza un modello statistico basato sulla distribuzione binomiale negativa per modellare i dati di conteggio e stimare la variabilità tra i replicati.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Testing**:  L'analisi differenziale di espressione genica in DESeq2 si basa su test statistici che tengono conto del disegno sperimentale e controllano il tasso di falsi positivi.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Attraverso queste fasi, si otterrà una **lista di geni differenzialmente espressi**, comprensiva di stime dell'effetto (log2 fold change) e significatività statistica (p-value aggiustati).</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

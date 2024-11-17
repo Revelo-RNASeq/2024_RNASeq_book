@@ -262,13 +262,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-<li><a href="#confronto" id="toc-confronto" class="nav-link active" data-scroll-target="#confronto"><span class="header-section-number">2.1</span> Confronto</a></li>
-  <li><a href="#cutoff-di-fold-change-e-p-value-utilizzati" id="toc-cutoff-di-fold-change-e-p-value-utilizzati" class="nav-link" data-scroll-target="#cutoff-di-fold-change-e-p-value-utilizzati"><span class="header-section-number">2.2</span> Cutoff di Fold Change e p-Value utilizzati</a></li>
-  </ul></nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./001_sec-preproc.html">Preparazione ed esplorazione dei dati</a></li><li class="breadcrumb-item"><a href="./001_b_sec-preproc_params.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Disegno Sperimentale</span></a></li></ol></nav><div class="quarto-title">
@@ -286,34 +281,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="confronto" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="confronto">
-<span class="header-section-number">2.1</span> Confronto</h2>
-<ul>
-<li>Tutti i rapporti devono essere considerati come <strong>InfluenzaA</strong> rispetto a <strong>NonInfected</strong><br>
-</li>
-<li>Un rapporto di fold change &gt; 1 (o logFCRatio positivo) indica sovraespressione nella condizione <strong>InfluenzaA</strong><br>
-</li>
-<li>Un rapporto di fold change &lt; 1 (o logFCRatio negativo) indica sovraespressione nella condizione <strong>NonInfected</strong>
-</li>
-</ul></section><section id="cutoff-di-fold-change-e-p-value-utilizzati" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="cutoff-di-fold-change-e-p-value-utilizzati">
-<span class="header-section-number">2.2</span> Cutoff di Fold Change e p-Value utilizzati</h2>
-<ul>
-<li>Cutoff di Log Fold Change = <strong>0.8</strong><br>
-</li>
-<li>Cutoff di P-Value = <strong>0.01</strong><br>
-</li>
-<li>I p-value aggiustati sono determinati con il metodo <strong>fdr</strong><br>
-</li>
-</ul>
-<p>I dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).<br></p>
-<p>Per questo report, <strong>tutti e solo</strong> i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale <strong>viene scartato</strong> e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni <strong>non presenti</strong> nel confronto possano avere sulla trasformazione e normalizzazione dei campioni <strong>presenti</strong> nel confronto.<br></p>
-<p>I campioni presi in considerazione in questa analisi appartengono ai gruppi: <strong>InfluenzaA e NonInfected</strong>.<br>
+</header><p>I campioni presi in considerazione in questa analisi appartengono ai gruppi: <strong>InfluenzaA e NonInfected</strong>.<br>
 Questo è il layout del samplesheet, ovvero l’associazione tra i singoli campioni e i gruppi di campioni:</p>
 
 
 <!-- -->
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+
+</main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -810,41 +785,43 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"_common.R"</span>)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># Disegno Sperimentale {#sec-preproc-params}</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Confronto</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tutti i rapporti devono essere considerati come **`r params$mynum`** rispetto a **`r params$mydenom`**    </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Un rapporto di fold change <span class="sc">\&gt;</span> 1 (o logFCRatio positivo) indica sovraespressione nella condizione **`r params$mynum`**    </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Un rapporto di fold change <span class="sc">\&lt;</span> 1 (o logFCRatio negativo) indica sovraespressione nella condizione **`r params$mydenom`**    </span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cutoff di Fold Change e p-Value utilizzati</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cutoff di Log Fold Change = **`r params$myfc`**\</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cutoff di P-Value = **`r params$mypval`**\</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>I p-value aggiustati sono determinati con il metodo **`r params$mypadj`**\</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>I dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Per questo report, **tutti e solo** i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale **viene scartato** e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni **non presenti** nel confronto possano avere sulla trasformazione e normalizzazione dei campioni **presenti** nel confronto.\</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>I campioni presi in considerazione in questa analisi appartengono ai gruppi: **`r params$mynum` e `r params$mydenom`**.\</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>Questo è il layout del samplesheet, ovvero l'associazione tra i singoli campioni e i gruppi di campioni:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{r reading_data}</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">#| echo: false </span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in"># reading and preparing the data</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">readcounts &lt;- read.csv("data/GSE96870_counts_cerebellum.csv", </span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in">                   row.names = 1)</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="in">datanames &lt;- colnames(readcounts)</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="in">coldata_all &lt;- read.csv("data/GSE96870_coldata_all.csv",</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">                    row.names = 1)</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">coldata &lt;- coldata_all[datanames,]</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">saveRDS(readcounts, "data/readcounts.rds")</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="in">saveRDS(coldata, "data/coldata.rds")</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden when-meta="features.advanced_analysis"}</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu"># Disegno Sperimentale {#sec-preproc-params}</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Confronto</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Tutti i rapporti devono essere considerati come **`r params$mynum`** rispetto a **`r params$mydenom`**\</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Un rapporto di fold change <span class="sc">\&gt;</span> 1 (o logFCRatio positivo) indica sovraespressione nella condizione **`r params$mynum`**\</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Un rapporto di fold change <span class="sc">\&lt;</span> 1 (o logFCRatio negativo) indica sovraespressione nella condizione **`r params$mydenom`**</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cutoff di Fold Change e p-Value utilizzati</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cutoff di Log Fold Change = **`r params$myfc`**\</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Cutoff di P-Value = **`r params$mypval`**\</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>I p-value aggiustati sono determinati con il metodo **`r params$mypadj`**\</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>I dati dei conteggi di lettura vengono letti in un formato grezzo (non normalizzato) così come sono prodotti dalla precedente procedura analitica (analisi primaria, ovvero mappatura e conteggio).\</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Per questo report, **tutti e solo** i campioni considerati nel contrasto (confronto di espressione differenziale) vengono letti: qualsiasi altro campione (colonna) che possa essere presente nel file originale **viene scartato** e non preso in considerazione. Questo viene fatto per evitare qualsiasi influenza che i campioni **non presenti** nel confronto possano avere sulla trasformazione e normalizzazione dei campioni **presenti** nel confronto.\</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>I campioni presi in considerazione in questa analisi appartengono ai gruppi: **`r params$mynum` e `r params$mydenom`**.\</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Questo è il layout del samplesheet, ovvero l'associazione tra i singoli campioni e i gruppi di campioni:</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r reading_data}</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">#| echo: false </span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in"># reading and preparing the data</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="in">readcounts &lt;- read.csv("data/GSE96870_counts_cerebellum.csv", </span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="in">                   row.names = 1)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="in">datanames &lt;- colnames(readcounts)</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">coldata_all &lt;- read.csv("data/GSE96870_coldata_all.csv",</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="in">                    row.names = 1)</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">coldata &lt;- coldata_all[datanames,]</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="in">saveRDS(readcounts, "data/readcounts.rds")</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="in">saveRDS(coldata, "data/coldata.rds")</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
