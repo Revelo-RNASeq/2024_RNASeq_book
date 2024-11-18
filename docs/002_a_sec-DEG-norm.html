@@ -281,7 +281,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>La normalizzazione rappresenta una fase cruciale nell’analisi RNA-seq, in quanto permette di confrontare accuratamente l’espressione genica tra differenti campioni. A tal fine, DESeq2 implementa un metodo robusto ed efficace che considera le variazioni nella dimensione della libreria e la composizione del trascrittoma.</p>
+</header><p>La normalizzazione è un processo fondamentale nell’analisi RNA-seq, in quanto consente di confrontare in modo accurato l’espressione genica tra campioni diversi. DESeq2 implementa un metodo di normalizzazione robusto ed efficace che tiene conto delle differenze nella dimensione della libreria e della composizione del trascrittoma.</p>
+<p><strong>Perché è necessaria la normalizzazione?</strong></p>
+<p>Le librerie di sequenziamento RNA possono variare in termini di dimensione, ovvero il numero totale di reads sequenziate. Queste differenze possono essere dovute a variazioni tecniche nel processo di preparazione delle librerie o a differenze biologiche nella quantità di RNA di partenza. Senza normalizzazione, le differenze nella dimensione della libreria potrebbero essere erroneamente interpretate come differenze nell’espressione genica.</p>
+<p><strong>Il metodo di normalizzazione di DESeq2</strong></p>
+<p>DESeq2 utilizza un metodo di normalizzazione basato sui <strong>fattori di dimensione</strong> (size factors). Questo metodo assume che la maggior parte dei geni non sia differenzialmente espressa tra le condizioni sperimentali.</p>
+<p><strong>Ecco come funziona:</strong></p>
+<ol type="1">
+<li><p><strong>Calcolo della mediana del rapporto:</strong> Per ogni gene, viene calcolato il rapporto tra il suo conteggio in un campione e la mediana dei suoi conteggi in tutti i campioni.</p></li>
+<li><p><strong>Stima dei fattori di dimensione:</strong> Per ogni campione, il fattore di dimensione è la mediana dei rapporti calcolati al punto 1. Questo fattore rappresenta un fattore di scala che viene utilizzato per normalizzare i conteggi grezzi.</p></li>
+<li><p><strong>Normalizzazione dei conteggi:</strong> I conteggi grezzi di ciascun gene vengono divisi per il fattore di dimensione del corrispondente campione.</p></li>
+</ol>
+<p><strong>Vantaggi del metodo di DESeq2:</strong></p>
+<ul>
+<li>
+<strong>Robustezza:</strong> Il metodo è robusto agli outlier, ovvero a geni con conteggi estremi che potrebbero influenzare altri metodi di normalizzazione.</li>
+<li>
+<strong>Efficacia:</strong> Il metodo è efficace nel correggere le differenze nella dimensione della libreria e nella composizione del trascrittoma.</li>
+<li>
+<strong>Semplicità:</strong> Il metodo è relativamente semplice da comprendere e implementare.</li>
+</ul>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dds_esf</span> <span class="op">&lt;-</span> <span class="fu">estimateSizeFactors</span><span class="op">(</span><span class="va">dds</span><span class="op">)</span></span>
 <span></span>

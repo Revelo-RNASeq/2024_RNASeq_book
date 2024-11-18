@@ -293,6 +293,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="heatmap" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="heatmap">
 <span class="header-section-number">6.1</span> Heatmap</h2>
 <p>Un heatmap è uno strumento potente per visualizzare dati di espressione genica, in quanto consente di osservare pattern di espressione di più geni in diversi campioni simultaneamente.</p>
+<p><strong>Come funziona:</strong></p>
+<ol type="1">
+<li><p><strong>Matrice di dati:</strong>&nbsp;I dati di espressione genica sono organizzati in una matrice, dove le righe rappresentano i geni e le colonne rappresentano i campioni. Ogni cella della matrice contiene un valore che indica il livello di espressione di un particolare gene in un particolare campione.</p></li>
+<li><p><strong>Mappa di colori:</strong>&nbsp;I valori di espressione sono mappati a una scala di colori, in genere con colori freddi (ad esempio, blu) che rappresentano bassi livelli di espressione e colori caldi (ad esempio, rosso) che rappresentano alti livelli di espressione.</p></li>
+<li><p><strong>Visualizzazione:</strong>&nbsp;La matrice viene visualizzata come una griglia di celle colorate, dove ogni cella rappresenta un valore di espressione. I pattern di espressione possono essere facilmente identificati osservando le variazioni di colore nella griglia.</p></li>
+</ol>
+<p><strong>Clustering gerarchico:</strong></p>
+<p>Spesso, i heatmap vengono combinati con il clustering gerarchico per raggruppare geni e campioni con pattern di espressione simili.</p>
+<ul>
+<li>
+<strong>Clustering dei campioni:</strong>&nbsp;I campioni con pattern di espressione simili vengono raggruppati insieme in colonne.</li>
+</ul>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu">assay</span><span class="op">(</span><span class="va">vst</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>

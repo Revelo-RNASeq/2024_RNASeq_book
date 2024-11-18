@@ -55,7 +55,7 @@ format:
     callout-appearance: simple
 
 features:
-  advanced_analysis: true
+  advanced_analysis: false
   
 params:
   mycondition: infection

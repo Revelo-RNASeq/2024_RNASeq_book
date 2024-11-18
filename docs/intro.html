@@ -281,7 +281,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><div class="cell">
+</header><p>Benvenuti nel complesso mondo dell’analisi dei dati di sequenziamento RNA! Come illustrato nella <a href="#fig-workflow" class="quarto-xref">Figure&nbsp;<span>1</span></a>, il processo di analisi si articola in diverse fasi cruciali e interconnesse. Ogni step si fonda sui risultati del precedente, permettendoci di estrarre informazioni biologiche significative dai dati grezzi generati dagli esperimenti di RNA-seq.</p>
+<p>La <a href="#fig-workflow" class="quarto-xref">Figure&nbsp;<span>1</span></a> rappresenta una roadmap per la nostra analisi. Inizieremo con l’importazione e la pre-elaborazione dei dati di conteggio, provenienti da strumenti di quantificazione (<a href="https://htseq.readthedocs.io/en/release_0.11.1/">HTSeq</a>)o quasi-mapping (<a href="https://combine-lab.github.io/salmon/">Salmon</a>). Successivamente, utilizzeremo <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a> per modellare i dati di conteggio, tenendo conto del disegno sperimentale e delle caratteristiche intrinseche dei dati RNA-seq, come la variabilità inter-replicato e la sovra-dispersione. L’obiettivo finale è <strong>identificare i geni differenzialmente espressi tra le diverse condizioni sperimentali</strong>, interpretando i risultati in un contesto biologico.”</p>
+<div class="cell">
 <div class="cell-output-display">
 <div id="fig-workflow" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -293,32 +295,46 @@ Figure&nbsp;1: Questi sono i passaggi per l’analisi RNASeq
 </div>
 </div>
 </div>
-<p><strong>Introduzione sintetica di ogni fase:</strong></p>
+<p><strong>Introduzione dettagliata di ogni fase:</strong></p>
+<ul>
+<li><p><strong>Importazione dei Dati:</strong> “Il punto di partenza è l’importazione dei dati grezzi di conteggio, tipicamente organizzati in una matrice geni x campioni. Oltre ai conteggi genici, potremmo dover gestire dati di abbondanza a livello di trascritto, sfruttando pacchetti come <code>tximport</code> o <code>tximeta</code> per l’integrazione con DESeq2. È fondamentale assicurare la corretta formattazione dei dati e la compatibilità con il pacchetto DESeq2.”</p></li>
+<li><p><strong>Disegno Sperimentale:</strong> “La definizione del disegno sperimentale è un prerequisito fondamentale per un’analisi accurata. Dovremo costruire una tabella di metadati che annoti in modo preciso ogni campione, specificando i fattori sperimentali (es. condizioni di trattamento, tessuti, tempi) e i loro livelli. Queste informazioni saranno integrate nel modello statistico per l’analisi dell’espressione differenziale.”</p></li>
+<li><p><strong>Filtraggio:</strong> “Il filtraggio dei geni con basso conteggio è un passaggio importante per migliorare l’affidabilità dell’analisi. Geni con un numero insufficiente di reads mappate possono introdurre rumore e distorcere i risultati. Possiamo applicare criteri di filtraggio basati su soglie di conteggio o sull’informazione di annotazione genica.”</p></li>
+<li><p><strong>Esplorazione dei Dati (Conteggi Grezzi):</strong> “Prima di applicare qualsiasi trasformazione, è essenziale analizzare i dati di conteggio grezzi. Attraverso la visualizzazione delle distribuzioni, l’analisi delle relazioni tra campioni (es. PCA) e l’identificazione di potenziali outlier, possiamo valutare la qualità dei dati e individuare eventuali problematiche che richiedono attenzione.”</p></li>
+<li>
+<p><strong>Trasformazione dei Dati:</strong> “Per stabilizzare la varianza e rendere i dati più adatti alle assunzioni del modello statistico, possiamo applicare trasformazioni come la Variance Stabilizing Transformation (VST) o la Regularized Log Transformation (rlog). La scelta della trasformazione dipenderà dalle caratteristiche dei dati e dagli obiettivi dell’analisi.”</p>
 <ul>
 <li>
-<strong>Importazione dei Dati:</strong> Importare la matrice di conteggio.</li>
+<p><strong>VST vs.&nbsp;rlog</strong></p>
+<p>Sia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. Questo è importante perché il modello statistico di DESeq2 assume che la varianza sia approssimativamente costante per tutti i geni.</p>
+<p><strong>Quando scegliere VST?</strong></p>
+<ul>
 <li>
-<strong>Disegno Sperimentale:</strong> Definire la tabella di metadati con i fattori sperimentali e i livelli per ciascun campione.</li>
+<strong>Analisi di Espressione Differenziale:</strong> La VST è generalmente preferita per l’analisi dell’espressione differenziale, poiché è stata specificamente progettata per questo scopo.</li>
 <li>
-<strong>Esplorazione dei Dati (Grezzi):</strong> Analizzare le distribuzioni dei conteggi, le relazioni tra campioni e identificare potenziali outlier.</li>
+<strong>Visualizzazione di Heatmap e PCA:</strong> La VST è adatta per visualizzare i dati in heatmap e PCA, in quanto preserva bene le distanze tra i campioni.</li>
 <li>
-<strong>Trasformazione dei Dati:</strong> Applicare VST o rlog per stabilizzare la varianza e migliorare l’adattamento al modello statistico.</li>
+<strong>Dataset di Grandi Dimensioni:</strong> La VST è computazionalmente più efficiente della rlog, quindi è preferibile per dataset con molti geni o campioni.</li>
+</ul>
+<p><strong>Quando scegliere rlog?</strong></p>
+<ul>
 <li>
-<strong>Esplorazione dei Dati (Trasformati):</strong> Valutare l’effetto della trasformazione e confrontarlo con i dati originali.</li>
+<strong>Esplorazione dei Dati:</strong> La rlog può essere utile per esplorare i dati in modo più intuitivo, poiché produce valori che sono più simili ai log2 fold change.</li>
 <li>
-<strong>Filtraggio:</strong> Rimuovere i geni con basso conteggio per aumentare l’affidabilità dell’analisi.</li>
+<strong>Clustering:</strong> La rlog può essere preferita per il clustering dei geni, poiché tende a separare meglio i cluster.</li>
 <li>
-<strong>Modello DESeq2:</strong> Utilizzare la distribuzione binomiale negativa per modellare i dati di conteggio e stimare i parametri chiave.</li>
-<li>
-<strong>Contrasti:</strong> Definire i confronti specifici tra le condizioni sperimentali.</li>
-<li>
-<strong>DESeq2:</strong> Eseguire l’analisi dell’espressione differenziale con la funzione <code>DESeq()</code>.</li>
-<li>
-<strong>Esplorazione dei Risultati:</strong> Individuare i geni differenzialmente espressi in base a significatività e dimensione dell’effetto.</li>
-<li>
-<strong>Shrinking:</strong> Applicare lo shrinkage per migliorare l’accuratezza delle stime dei log2 fold change.</li>
-<li>
-<strong>Visualizzazione dei Risultati:</strong> Creare grafici (MA plot, volcano plot, heatmap) per rappresentare i risultati.</li>
+<strong>Dataset di Piccole Dimensioni:</strong> La rlog può essere più accurata della VST per dataset con pochi geni o campioni.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Esplorazione dei Dati (Dati Trasformati):</strong> “Dopo la trasformazione, è opportuno riesaminare i dati per valutare l’effetto della trasformazione e confrontarli con i conteggi grezzi. Questo ci permette di verificare l’efficacia della trasformazione e di identificare eventuali artefatti.”</p></li>
+<li><p><strong>Modello DESeq2:</strong> “Il cuore dell’analisi risiede nel <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#theory">modello statistico</a> implementato in <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>. Questo modello si basa sulla <a href="https://it.wikipedia.org/wiki/Distribuzione_di_Pascal">distribuzione binomiale negativa</a>, che è particolarmente adatta per modellare i dati di conteggio RNA-seq, caratterizzati da sovra-dispersione. DESeq2 stima i fattori di normalizzazione per le dimensioni della libreria e la dispersione genica, parametri cruciali per l’identificazione dei geni differenzialmente espressi.”</p></li>
+<li><p><strong>Contrasti:</strong> “Per effettuare confronti specifici tra le condizioni sperimentali, dobbiamo definire i <a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#contrasts">contrasti di interesse</a>. I contrasti specificano quali gruppi confrontare e la direzione dell’effetto atteso. DESeq2 consente di definire contrasti complessi, includendo interazioni tra fattori e analisi di serie temporali.”</p></li>
+<li><p><strong>DESeq2:</strong> “In questa fase, applichiamo la funzione <code>DESeq()</code> per eseguire l’analisi dell’<a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#differential-expression-analysis">espressione differenziale</a>. DESeq2 utilizza il modello statistico e i contrasti definiti per calcolare i log2 fold change, i valori p e i valori p aggiustati per ogni gene.”</p></li>
+<li><p><strong>Esplorazione dei Risultati:</strong> “L’<a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#exploring-and-exporting-results">analisi dei risultati</a> consiste nell’esaminare le tabelle generate da DESeq2, individuando i geni differenzialmente espressi in base a criteri di significatività statistica (valori p aggiustati) e di rilevanza biologica (log2 fold change). È importante considerare sia la significatività che la dimensione dell’effetto.”</p></li>
+<li><p><strong>Shrinking:</strong> “Per ottenere stime più accurate e interpretabili dei log2 fold change, possiamo applicare metodi di shrinkage. Lo shrinkage riduce l’effetto dei geni con bassa espressione o alta varianza, migliorando l’affidabilità delle stime.”</p></li>
+<li><p><strong>Visualizzazione dei Risultati:</strong> “La visualizzazione dei risultati è fondamentale per la comunicazione e l’interpretazione dei dati. Utilizzeremo grafici come MA plot, volcano plot e heatmap per rappresentare i risultati dell’analisi in modo efficace, evidenziando i geni differenzialmente espressi e i pattern di espressione.”</p></li>
 </ul>
 
 

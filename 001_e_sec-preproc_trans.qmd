@@ -81,7 +81,7 @@ Per stabilizzare la varianza e rendere i dati più adatti alle assunzioni del mo
 ::: {.content-hidden when-meta="features.advanced_analysis"}
 ## VST vs. rlog
 
-Sia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. Questo è importante perché il modello statistico di DESeq2 assume che la varianza sia approssimativamente costante per tutti i geni.
+Sia la VST (Variance Stabilizing Transformation) che la rlog (Regularized Log Transformation) mirano a trasformare i dati di conteggio per stabilizzare la varianza tra i geni con diversa espressione. 
 
 ### Quando scegliere VST?
 

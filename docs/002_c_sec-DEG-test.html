@@ -282,6 +282,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>Dopo aver normalizzato i dati e stimato i parametri del modello, DESeq2 applica test statistici per identificare i geni differenzialmente espressi tra le condizioni sperimentali.</p>
+<p><strong>Test di Wald</strong></p>
+<p>Il test statistico principale utilizzato da DESeq2 è il <strong>test di Wald</strong>. Questo test verifica l’ipotesi nulla che il log2 fold change di un gene tra due condizioni sia uguale a zero. In altre parole, il test verifica se c’è una differenza significativa nell’espressione del gene tra le condizioni.</p>
+<p><strong>Come funziona il test di Wald:</strong></p>
+<ol type="1">
+<li>
+<strong>Stima del log2 fold change:</strong> DESeq2 stima il log2 fold change per ogni gene, che rappresenta la differenza di espressione tra le condizioni.</li>
+<li>
+<strong>Calcolo della statistica del test:</strong> DESeq2 calcola la statistica del test di Wald, che è il rapporto tra la stima del log2 fold change e il suo errore standard.</li>
+<li>
+<strong>Calcolo del p-value:</strong> DESeq2 calcola il p-value, che rappresenta la probabilità di osservare un log2 fold change così estremo (o più estremo) se l’ipotesi nulla fosse vera.</li>
+</ol>
+<p><strong>Correzione per test multipli</strong></p>
+<p>Poiché vengono testati migliaia di geni contemporaneamente, è necessario correggere i p-value per il problema dei test multipli. DESeq2 utilizza come default il metodo di Benjamini-Hochberg per controllare il False Discovery Rate (FDR).</p>
+<p><strong>Interpretazione dei risultati</strong></p>
+<p>I geni con un p-value aggiustato (padj) inferiore a una soglia di significatività (ad esempio, 0.05) sono considerati differenzialmente espressi. Il log2 fold change indica la direzione e l’entità della differenza di espressione.</p>
 <div class="cell">
 <details class="code-fold"><summary>Mostra il codice R</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ddsf</span> <span class="op">&lt;-</span> <span class="fu">nbinomWaldTest</span><span class="op">(</span><span class="va">dds_stat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>

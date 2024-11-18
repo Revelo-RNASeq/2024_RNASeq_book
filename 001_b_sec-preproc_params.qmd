@@ -38,7 +38,7 @@ I campioni presi in considerazione in questa analisi appartengono ai gruppi: **`
 Questo è il layout del samplesheet, ovvero l'associazione tra i singoli campioni e i gruppi di campioni:
 
 ```{r reading_data}
-#| echo: false 
+#| echo: true 
 # reading and preparing the data
 readcounts <- read.csv("data/GSE96870_counts_cerebellum.csv", 
                    row.names = 1)
