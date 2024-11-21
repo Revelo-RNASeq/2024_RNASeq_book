@@ -43,6 +43,7 @@ I geni che hanno **meno di 5 conteggi di lettura** sono stati filtrati.
 Nella tabella sottostante un sotto insieme dei campioni: 25 osservazioni (geni) e 4 variabili (individui).
 
 ```{r dds_filter}
+#| echo: true
 # create DESeq objects (Dataset)
 dds <- DESeqDataSetFromMatrix(
   countData = readcounts,
